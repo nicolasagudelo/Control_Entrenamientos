@@ -1,0 +1,14 @@
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.vbprojResolveAssemblyReference.cache
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form1.resources
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Resources.resources
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.vbproj.GenerateResource.Cache
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.vbproj.CoreCompileInputs.cache
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\Control_Entrenamientos.exe.config
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\Control_Entrenamientos.exe
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\Control_Entrenamientos.pdb
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\Control_Entrenamientos.xml
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\MySql.Data.dll
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\MySql.Data.xml
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.exe
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.xml
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.pdb
