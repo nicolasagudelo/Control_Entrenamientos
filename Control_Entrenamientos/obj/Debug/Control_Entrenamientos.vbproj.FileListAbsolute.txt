@@ -12,3 +12,5 @@ C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\
 C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.exe
 C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.xml
 C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.pdb
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Interop.ZKFPEngXControl.dll
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.vbproj.ResolveComReference.cache

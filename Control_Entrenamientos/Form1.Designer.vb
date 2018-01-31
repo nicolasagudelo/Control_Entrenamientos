@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,12 +20,14 @@ Partial Class Form1
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.LblCodigoEntrenamiento = New System.Windows.Forms.Label()
+        Me.CmbBxCodigoEntrenamiento = New System.Windows.Forms.ComboBox()
         Me.BtnFiltrarFechas = New System.Windows.Forms.Button()
         Me.DGVEntrenamientos = New System.Windows.Forms.DataGridView()
         Me.LblNEntrenamientos = New System.Windows.Forms.Label()
@@ -35,32 +37,32 @@ Partial Class Form1
         Me.LblFechaInicio = New System.Windows.Forms.Label()
         Me.FechaInicio = New System.Windows.Forms.DateTimePicker()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.CmbBxCodigoEntrenamiento = New System.Windows.Forms.ComboBox()
-        Me.LblCodigoEntrenamiento = New System.Windows.Forms.Label()
-        Me.CmbBxTablas = New System.Windows.Forms.ComboBox()
-        Me.DGVAdmin = New System.Windows.Forms.DataGridView()
+        Me.PanelAdmin = New System.Windows.Forms.Panel()
+        Me.CmbBxCargos = New System.Windows.Forms.ComboBox()
+        Me.CmbBxPruebas = New System.Windows.Forms.ComboBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.BtnAgregar = New System.Windows.Forms.Button()
+        Me.CmbBxFrecuencia = New System.Windows.Forms.ComboBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.CmbBxTipoEntrenamiento = New System.Windows.Forms.ComboBox()
+        Me.TxtBxCodigoEntrenamiento = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.GroupBoxControlesTablas = New System.Windows.Forms.GroupBox()
         Me.BtnEliminarRegistro = New System.Windows.Forms.Button()
         Me.BtnModificarRegistro = New System.Windows.Forms.Button()
         Me.BtnNuevoRegistro = New System.Windows.Forms.Button()
-        Me.PanelAdmin = New System.Windows.Forms.Panel()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.TxtBxCodigoEntrenamiento = New System.Windows.Forms.TextBox()
-        Me.CmbBxTipoEntrenamiento = New System.Windows.Forms.ComboBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.CmbBxFrecuencia = New System.Windows.Forms.ComboBox()
-        Me.BtnAgregar = New System.Windows.Forms.Button()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
-        Me.Label5 = New System.Windows.Forms.Label()
+        Me.DGVAdmin = New System.Windows.Forms.DataGridView()
+        Me.CmbBxTablas = New System.Windows.Forms.ComboBox()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.DGVEntrenamientos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
-        CType(Me.DGVAdmin, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBoxControlesTablas.SuspendLayout()
         Me.PanelAdmin.SuspendLayout()
+        Me.GroupBoxControlesTablas.SuspendLayout()
+        CType(Me.DGVAdmin, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -94,9 +96,26 @@ Partial Class Form1
         Me.TabPage1.Location = New System.Drawing.Point(23, 4)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1050, 481)
+        Me.TabPage1.Size = New System.Drawing.Size(1050, 542)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "TabPage1"
+        '
+        'LblCodigoEntrenamiento
+        '
+        Me.LblCodigoEntrenamiento.AutoSize = True
+        Me.LblCodigoEntrenamiento.Location = New System.Drawing.Point(355, 29)
+        Me.LblCodigoEntrenamiento.Name = "LblCodigoEntrenamiento"
+        Me.LblCodigoEntrenamiento.Size = New System.Drawing.Size(111, 13)
+        Me.LblCodigoEntrenamiento.TabIndex = 36
+        Me.LblCodigoEntrenamiento.Text = "Codigo Entrenamiento"
+        '
+        'CmbBxCodigoEntrenamiento
+        '
+        Me.CmbBxCodigoEntrenamiento.FormattingEnabled = True
+        Me.CmbBxCodigoEntrenamiento.Location = New System.Drawing.Point(358, 45)
+        Me.CmbBxCodigoEntrenamiento.Name = "CmbBxCodigoEntrenamiento"
+        Me.CmbBxCodigoEntrenamiento.Size = New System.Drawing.Size(142, 21)
+        Me.CmbBxCodigoEntrenamiento.TabIndex = 35
         '
         'BtnFiltrarFechas
         '
@@ -187,61 +206,133 @@ Partial Class Form1
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "TabPage2"
         '
-        'CmbBxCodigoEntrenamiento
+        'PanelAdmin
         '
-        Me.CmbBxCodigoEntrenamiento.FormattingEnabled = True
-        Me.CmbBxCodigoEntrenamiento.Location = New System.Drawing.Point(358, 45)
-        Me.CmbBxCodigoEntrenamiento.Name = "CmbBxCodigoEntrenamiento"
-        Me.CmbBxCodigoEntrenamiento.Size = New System.Drawing.Size(142, 21)
-        Me.CmbBxCodigoEntrenamiento.TabIndex = 35
-        '
-        'LblCodigoEntrenamiento
-        '
-        Me.LblCodigoEntrenamiento.AutoSize = True
-        Me.LblCodigoEntrenamiento.Location = New System.Drawing.Point(355, 29)
-        Me.LblCodigoEntrenamiento.Name = "LblCodigoEntrenamiento"
-        Me.LblCodigoEntrenamiento.Size = New System.Drawing.Size(111, 13)
-        Me.LblCodigoEntrenamiento.TabIndex = 36
-        Me.LblCodigoEntrenamiento.Text = "Codigo Entrenamiento"
-        '
-        'CmbBxTablas
-        '
-        Me.CmbBxTablas.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.CmbBxTablas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CmbBxTablas.FormattingEnabled = True
-        Me.CmbBxTablas.Location = New System.Drawing.Point(16, 484)
-        Me.CmbBxTablas.Name = "CmbBxTablas"
-        Me.CmbBxTablas.Size = New System.Drawing.Size(184, 21)
-        Me.CmbBxTablas.TabIndex = 0
-        '
-        'DGVAdmin
-        '
-        DataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.DGVAdmin.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle13
-        Me.DGVAdmin.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.PanelAdmin.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.DGVAdmin.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
-        Me.DGVAdmin.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
-        Me.DGVAdmin.BackgroundColor = System.Drawing.SystemColors.Control
-        Me.DGVAdmin.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.DGVAdmin.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.ActiveBorder
-        DataGridViewCellStyle14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte), True)
-        DataGridViewCellStyle14.ForeColor = System.Drawing.Color.Coral
-        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DGVAdmin.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle14
-        Me.DGVAdmin.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DGVAdmin.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.DGVAdmin.GridColor = System.Drawing.Color.DarkRed
-        Me.DGVAdmin.ImeMode = System.Windows.Forms.ImeMode.[On]
-        Me.DGVAdmin.Location = New System.Drawing.Point(16, 30)
-        Me.DGVAdmin.Name = "DGVAdmin"
-        Me.DGVAdmin.Size = New System.Drawing.Size(1023, 356)
-        Me.DGVAdmin.TabIndex = 4
-        Me.DGVAdmin.TabStop = False
+        Me.PanelAdmin.Controls.Add(Me.CmbBxCargos)
+        Me.PanelAdmin.Controls.Add(Me.CmbBxPruebas)
+        Me.PanelAdmin.Controls.Add(Me.Label5)
+        Me.PanelAdmin.Controls.Add(Me.RichTextBox1)
+        Me.PanelAdmin.Controls.Add(Me.Label4)
+        Me.PanelAdmin.Controls.Add(Me.BtnAgregar)
+        Me.PanelAdmin.Controls.Add(Me.CmbBxFrecuencia)
+        Me.PanelAdmin.Controls.Add(Me.Label3)
+        Me.PanelAdmin.Controls.Add(Me.Label2)
+        Me.PanelAdmin.Controls.Add(Me.CmbBxTipoEntrenamiento)
+        Me.PanelAdmin.Controls.Add(Me.TxtBxCodigoEntrenamiento)
+        Me.PanelAdmin.Controls.Add(Me.Label1)
+        Me.PanelAdmin.Location = New System.Drawing.Point(545, 400)
+        Me.PanelAdmin.Name = "PanelAdmin"
+        Me.PanelAdmin.Size = New System.Drawing.Size(494, 142)
+        Me.PanelAdmin.TabIndex = 5
+        Me.PanelAdmin.Visible = False
+        '
+        'CmbBxCargos
+        '
+        Me.CmbBxCargos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbBxCargos.FormattingEnabled = True
+        Me.CmbBxCargos.Location = New System.Drawing.Point(156, 24)
+        Me.CmbBxCargos.Name = "CmbBxCargos"
+        Me.CmbBxCargos.Size = New System.Drawing.Size(121, 21)
+        Me.CmbBxCargos.TabIndex = 11
+        '
+        'CmbBxPruebas
+        '
+        Me.CmbBxPruebas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbBxPruebas.FormattingEnabled = True
+        Me.CmbBxPruebas.Location = New System.Drawing.Point(15, 24)
+        Me.CmbBxPruebas.Name = "CmbBxPruebas"
+        Me.CmbBxPruebas.Size = New System.Drawing.Size(121, 21)
+        Me.CmbBxPruebas.TabIndex = 10
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(321, 124)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(36, 13)
+        Me.Label5.TabIndex = 9
+        Me.Label5.Text = "0/150"
+        '
+        'RichTextBox1
+        '
+        Me.RichTextBox1.Location = New System.Drawing.Point(156, 64)
+        Me.RichTextBox1.MaxLength = 150
+        Me.RichTextBox1.Name = "RichTextBox1"
+        Me.RichTextBox1.Size = New System.Drawing.Size(207, 57)
+        Me.RichTextBox1.TabIndex = 8
+        Me.RichTextBox1.Text = ""
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(153, 48)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(39, 13)
+        Me.Label4.TabIndex = 7
+        Me.Label4.Text = "Label4"
+        '
+        'BtnAgregar
+        '
+        Me.BtnAgregar.Location = New System.Drawing.Point(399, 82)
+        Me.BtnAgregar.Name = "BtnAgregar"
+        Me.BtnAgregar.Size = New System.Drawing.Size(85, 39)
+        Me.BtnAgregar.TabIndex = 6
+        Me.BtnAgregar.Text = "Agregar"
+        Me.BtnAgregar.UseVisualStyleBackColor = True
+        '
+        'CmbBxFrecuencia
+        '
+        Me.CmbBxFrecuencia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbBxFrecuencia.FormattingEnabled = True
+        Me.CmbBxFrecuencia.Location = New System.Drawing.Point(156, 24)
+        Me.CmbBxFrecuencia.Name = "CmbBxFrecuencia"
+        Me.CmbBxFrecuencia.Size = New System.Drawing.Size(121, 21)
+        Me.CmbBxFrecuencia.TabIndex = 5
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(153, 9)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(39, 13)
+        Me.Label3.TabIndex = 4
+        Me.Label3.Text = "Label3"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(12, 48)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(39, 13)
+        Me.Label2.TabIndex = 3
+        Me.Label2.Text = "Label2"
+        '
+        'CmbBxTipoEntrenamiento
+        '
+        Me.CmbBxTipoEntrenamiento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbBxTipoEntrenamiento.FormattingEnabled = True
+        Me.CmbBxTipoEntrenamiento.Location = New System.Drawing.Point(15, 64)
+        Me.CmbBxTipoEntrenamiento.Name = "CmbBxTipoEntrenamiento"
+        Me.CmbBxTipoEntrenamiento.Size = New System.Drawing.Size(121, 21)
+        Me.CmbBxTipoEntrenamiento.TabIndex = 2
+        '
+        'TxtBxCodigoEntrenamiento
+        '
+        Me.TxtBxCodigoEntrenamiento.Location = New System.Drawing.Point(15, 25)
+        Me.TxtBxCodigoEntrenamiento.Name = "TxtBxCodigoEntrenamiento"
+        Me.TxtBxCodigoEntrenamiento.Size = New System.Drawing.Size(121, 20)
+        Me.TxtBxCodigoEntrenamiento.TabIndex = 1
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(12, 9)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(39, 13)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "Label1"
         '
         'GroupBoxControlesTablas
         '
@@ -286,113 +377,44 @@ Partial Class Form1
         Me.BtnNuevoRegistro.Text = "Nuevo Registro"
         Me.BtnNuevoRegistro.UseVisualStyleBackColor = True
         '
-        'PanelAdmin
+        'DGVAdmin
         '
-        Me.PanelAdmin.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.DGVAdmin.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        Me.DGVAdmin.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.PanelAdmin.Controls.Add(Me.Label5)
-        Me.PanelAdmin.Controls.Add(Me.RichTextBox1)
-        Me.PanelAdmin.Controls.Add(Me.Label4)
-        Me.PanelAdmin.Controls.Add(Me.BtnAgregar)
-        Me.PanelAdmin.Controls.Add(Me.CmbBxFrecuencia)
-        Me.PanelAdmin.Controls.Add(Me.Label3)
-        Me.PanelAdmin.Controls.Add(Me.Label2)
-        Me.PanelAdmin.Controls.Add(Me.CmbBxTipoEntrenamiento)
-        Me.PanelAdmin.Controls.Add(Me.TxtBxCodigoEntrenamiento)
-        Me.PanelAdmin.Controls.Add(Me.Label1)
-        Me.PanelAdmin.Location = New System.Drawing.Point(545, 400)
-        Me.PanelAdmin.Name = "PanelAdmin"
-        Me.PanelAdmin.Size = New System.Drawing.Size(494, 142)
-        Me.PanelAdmin.TabIndex = 5
-        Me.PanelAdmin.Visible = False
+        Me.DGVAdmin.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
+        Me.DGVAdmin.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
+        Me.DGVAdmin.BackgroundColor = System.Drawing.SystemColors.Control
+        Me.DGVAdmin.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.DGVAdmin.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ActiveBorder
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte), True)
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.Coral
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DGVAdmin.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        Me.DGVAdmin.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DGVAdmin.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.DGVAdmin.GridColor = System.Drawing.Color.DarkRed
+        Me.DGVAdmin.ImeMode = System.Windows.Forms.ImeMode.[On]
+        Me.DGVAdmin.Location = New System.Drawing.Point(16, 30)
+        Me.DGVAdmin.Name = "DGVAdmin"
+        Me.DGVAdmin.Size = New System.Drawing.Size(1023, 356)
+        Me.DGVAdmin.TabIndex = 4
+        Me.DGVAdmin.TabStop = False
         '
-        'Label1
+        'CmbBxTablas
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(12, 9)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(39, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Label1"
-        '
-        'TxtBxCodigoEntrenamiento
-        '
-        Me.TxtBxCodigoEntrenamiento.Location = New System.Drawing.Point(15, 25)
-        Me.TxtBxCodigoEntrenamiento.Name = "TxtBxCodigoEntrenamiento"
-        Me.TxtBxCodigoEntrenamiento.Size = New System.Drawing.Size(121, 20)
-        Me.TxtBxCodigoEntrenamiento.TabIndex = 1
-        '
-        'CmbBxTipoEntrenamiento
-        '
-        Me.CmbBxTipoEntrenamiento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CmbBxTipoEntrenamiento.FormattingEnabled = True
-        Me.CmbBxTipoEntrenamiento.Location = New System.Drawing.Point(15, 64)
-        Me.CmbBxTipoEntrenamiento.Name = "CmbBxTipoEntrenamiento"
-        Me.CmbBxTipoEntrenamiento.Size = New System.Drawing.Size(121, 21)
-        Me.CmbBxTipoEntrenamiento.TabIndex = 2
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(12, 48)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(39, 13)
-        Me.Label2.TabIndex = 3
-        Me.Label2.Text = "Label2"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(153, 9)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(39, 13)
-        Me.Label3.TabIndex = 4
-        Me.Label3.Text = "Label3"
-        '
-        'CmbBxFrecuencia
-        '
-        Me.CmbBxFrecuencia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CmbBxFrecuencia.FormattingEnabled = True
-        Me.CmbBxFrecuencia.Location = New System.Drawing.Point(156, 24)
-        Me.CmbBxFrecuencia.Name = "CmbBxFrecuencia"
-        Me.CmbBxFrecuencia.Size = New System.Drawing.Size(121, 21)
-        Me.CmbBxFrecuencia.TabIndex = 5
-        '
-        'BtnAgregar
-        '
-        Me.BtnAgregar.Location = New System.Drawing.Point(399, 82)
-        Me.BtnAgregar.Name = "BtnAgregar"
-        Me.BtnAgregar.Size = New System.Drawing.Size(85, 39)
-        Me.BtnAgregar.TabIndex = 6
-        Me.BtnAgregar.Text = "Agregar"
-        Me.BtnAgregar.UseVisualStyleBackColor = True
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(153, 48)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(39, 13)
-        Me.Label4.TabIndex = 7
-        Me.Label4.Text = "Label4"
-        '
-        'RichTextBox1
-        '
-        Me.RichTextBox1.Location = New System.Drawing.Point(156, 64)
-        Me.RichTextBox1.MaxLength = 150
-        Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(207, 57)
-        Me.RichTextBox1.TabIndex = 8
-        Me.RichTextBox1.Text = ""
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(321, 124)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(36, 13)
-        Me.Label5.TabIndex = 9
-        Me.Label5.Text = "0/150"
+        Me.CmbBxTablas.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.CmbBxTablas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbBxTablas.FormattingEnabled = True
+        Me.CmbBxTablas.Location = New System.Drawing.Point(16, 484)
+        Me.CmbBxTablas.Name = "CmbBxTablas"
+        Me.CmbBxTablas.Size = New System.Drawing.Size(184, 21)
+        Me.CmbBxTablas.TabIndex = 0
         '
         'Form1
         '
@@ -408,10 +430,10 @@ Partial Class Form1
         Me.TabPage1.PerformLayout()
         CType(Me.DGVEntrenamientos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
-        CType(Me.DGVAdmin, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBoxControlesTablas.ResumeLayout(False)
         Me.PanelAdmin.ResumeLayout(False)
         Me.PanelAdmin.PerformLayout()
+        Me.GroupBoxControlesTablas.ResumeLayout(False)
+        CType(Me.DGVAdmin, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -446,4 +468,6 @@ Partial Class Form1
     Friend WithEvents RichTextBox1 As RichTextBox
     Friend WithEvents Label4 As Label
     Friend WithEvents Label5 As Label
+    Friend WithEvents CmbBxPruebas As ComboBox
+    Friend WithEvents CmbBxCargos As ComboBox
 End Class

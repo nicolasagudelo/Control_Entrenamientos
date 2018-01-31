@@ -2,13 +2,13 @@
 
 Imports MySql.Data.MySqlClient
 Imports System.Configuration
+Imports ZKFPEngXControl
 
 Public Class Form1
     Dim conn As New MySqlConnection
     Private Sub BtnFiltrarFechas_Click(sender As Object, e As EventArgs) Handles BtnFiltrarFechas.Click
 
         Dim reader As MySqlDataReader
-
         If CmbBxCodigoEntrenamiento.SelectedValue = "" Then
 
             If FechaInicio.Value > FechaFin.Value Then
@@ -121,7 +121,6 @@ Public Class Form1
         FechaFin.Format = DateTimePickerFormat.Custom
         FechaFin.CustomFormat = "yyyy-MM-dd"
         Cargar_Codigos_Entrenamientos()
-
         Try
             conn.Open()
             Dim cmd As New MySqlCommand(String.Format("SELECT NOW();"), conn)
@@ -138,8 +137,6 @@ Public Class Form1
             FechaFin.Value = FechaFin.MaxDate
             Exit Sub
         End Try
-
-
 
     End Sub
 
@@ -174,7 +171,7 @@ Public Class Form1
         CmbBxTablas.Items.Add("Usuarios")
         CmbBxTablas.Items.Add("Entrenamientos")
         CmbBxTablas.Items.Add("Cargos")
-        CmbBxTablas.Items.Add("Pruebas de cada Cargo")
+        CmbBxTablas.Items.Add("Entrenamientos por Cargo")
         CmbBxTablas.Items.Add("Cargos del usuario")
         CmbBxTablas.Items.Add("Tipos de Entrenamiento")
         CmbBxTablas.Items.Add("Historial de Entrenamientos")
@@ -184,6 +181,7 @@ Public Class Form1
     End Sub
 
     Private Sub CmbBxTablas_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CmbBxTablas.SelectedIndexChanged
+        PanelAdmin.Visible = False
         CargarDGVAdmin()
     End Sub
 
@@ -201,7 +199,7 @@ Public Class Form1
                     order by pruebaID;"
         ElseIf nombre_tabla = "Cargos" Then
             query = "Select * from Cargos;"
-        ElseIf nombre_tabla = "Pruebas de cada Cargo" Then
+        ElseIf nombre_tabla = "Entrenamientos por Cargo" Then
             query = "Select rel_cargos_pruebas.PruebaID , Cargos.Nombre as 'Cargo' , rel_cargos_pruebas.CargoNo
                     from rel_cargos_pruebas inner join Cargos on rel_cargos_pruebas.CargoNo = Cargos.CargoNo
                     Order by PruebaID;"
@@ -252,30 +250,33 @@ Public Class Form1
             BtnNuevoRegistro.Enabled = True
             BtnModificarRegistro.Enabled = True
             BtnEliminarRegistro.Enabled = True
+            BtnNuevoRegistro.Visible = True
+            BtnModificarRegistro.Visible = True
+            BtnEliminarRegistro.Visible = True
         ElseIf nombre_tabla = "Entrenamientos" Then
             GroupBoxControlesTablas.Visible = True
             BtnNuevoRegistro.Text = "Agregar Entrenamiento"
             BtnEliminarRegistro.Text = "Desactivar Entrenamiento"
             BtnNuevoRegistro.Enabled = True
             BtnModificarRegistro.Visible = False
-            BtnEliminarRegistro.Enabled = True
+            BtnEliminarRegistro.Visible = True
             BtnEliminarRegistro.Visible = True
         ElseIf nombre_tabla = "Cargos" Then
             DGVAdmin.Columns(0).Visible = False
             GroupBoxControlesTablas.Visible = True
             BtnNuevoRegistro.Text = "Agregar Cargo"
-            BtnNuevoRegistro.Enabled = True
+            BtnNuevoRegistro.Visible = True
             BtnModificarRegistro.Visible = False
             BtnEliminarRegistro.Visible = False
-        ElseIf nombre_tabla = "Pruebas de cada Cargo" Then
+        ElseIf nombre_tabla = "Entrenamientos por Cargo" Then
             DGVAdmin.Columns(2).Visible = False
             GroupBoxControlesTablas.Visible = True
             BtnNuevoRegistro.Text = "Agregar Registro"
             BtnModificarRegistro.Text = "Modificar Registro"
             BtnEliminarRegistro.Text = "Eliminar Registro"
-            BtnNuevoRegistro.Enabled = True
-            BtnModificarRegistro.Enabled = True
-            BtnEliminarRegistro.Enabled = True
+            BtnNuevoRegistro.Visible = True
+            BtnModificarRegistro.Visible = False
+            BtnEliminarRegistro.Visible = True
         ElseIf nombre_tabla = "Cargos del usuario" Then
             DGVAdmin.Columns(2).Visible = False
             DGVAdmin.Columns(3).Visible = False
@@ -283,9 +284,18 @@ Public Class Form1
             BtnNuevoRegistro.Text = "Agregar Registro"
             BtnModificarRegistro.Text = "Modificar Registro"
             BtnEliminarRegistro.Text = "Eliminar Registro"
-            BtnNuevoRegistro.Enabled = True
-            BtnModificarRegistro.Enabled = True
-            BtnEliminarRegistro.Enabled = True
+            BtnNuevoRegistro.Visible = True
+            BtnModificarRegistro.Visible = False
+            BtnEliminarRegistro.Visible = True
+        ElseIf nombre_tabla = "Tipos de Entrenamiento" Then
+            GroupBoxControlesTablas.Visible = True
+            BtnNuevoRegistro.Text = "Agregar Registro"
+            BtnNuevoRegistro.Visible = True
+            BtnModificarRegistro.Visible = False
+            BtnEliminarRegistro.Visible = False
+            BtnNuevoRegistro.Text = "Agregar Registro"
+        ElseIf nombre_tabla = "Historial de Entrenamientos" Then
+            GroupBoxControlesTablas.Visible = False
         End If
 
     End Sub
@@ -302,14 +312,127 @@ Public Class Form1
             Label4.Text = "Nombre"
             LlenarCmbBxTipoEntrenamiento()
             LlenarCmbBxFrecuencia()
+            Label2.Visible = True
+            Label4.Visible = True
+            Label5.Visible = True
+            RichTextBox1.Visible = True
+            CmbBxCargos.Visible = False
+            CmbBxFrecuencia.Visible = True
+            TxtBxCodigoEntrenamiento.Visible = True
+            CmbBxPruebas.Visible = False
+            CmbBxTipoEntrenamiento.Visible = True
             PanelAdmin.Visible = True
         ElseIf nombre_tabla = "Cargos" Then
+            Label1.Text = "Nombre del Cargo"
+            Label1.Visible = True
+            TxtBxCodigoEntrenamiento.Visible = True
+            Label2.Visible = False
+            Label3.Visible = False
+            Label4.Visible = False
+            Label5.Visible = False
+            RichTextBox1.Visible = False
+            CmbBxCargos.Visible = False
+            CmbBxFrecuencia.Visible = False
+            CmbBxPruebas.Visible = False
+            CmbBxTipoEntrenamiento.Visible = False
+            PanelAdmin.Visible = True
 
-        ElseIf nombre_tabla = "Pruebas de cada Cargo" Then
-
+        ElseIf nombre_tabla = "Entrenamientos por Cargo" Then
+            Label1.Text = "Entrenamiento"
+            Label3.Text = "Cargo"
+            CmbBxPruebas.Visible = True
+            Label1.Visible = True
+            Label2.Visible = False
+            Label3.Visible = True
+            Label4.Visible = False
+            Label5.Visible = False
+            RichTextBox1.Visible = False
+            CmbBxCargos.Visible = True
+            CmbBxFrecuencia.Visible = False
+            CmbBxTipoEntrenamiento.Visible = False
+            TxtBxCodigoEntrenamiento.Visible = False
+            LlenarCmbBxPruebas()
+            LlenarCmbBxCargos()
+            PanelAdmin.Visible = True
         ElseIf nombre_tabla = "Cargos del usuario" Then
-
+            Label1.Text = "Usuario"
+            Label3.Text = "Cargo"
+            CmbBxPruebas.Visible = True
+            Label1.Visible = True
+            Label2.Visible = False
+            Label3.Visible = True
+            Label4.Visible = False
+            Label5.Visible = False
+            RichTextBox1.Visible = False
+            CmbBxCargos.Visible = True
+            CmbBxFrecuencia.Visible = False
+            CmbBxTipoEntrenamiento.Visible = False
+            TxtBxCodigoEntrenamiento.Visible = False
+            LlenarCmbBxUsuarios()
+            LlenarCmbBxCargos()
+            PanelAdmin.Visible = True
+        ElseIf nombre_tabla = "Tipos de Entrenamiento" Then
+            Label1.Text = "Nuevo Tipo de Entrenamiento"
+            Label1.Visible = True
+            TxtBxCodigoEntrenamiento.Visible = True
+            Label2.Visible = False
+            Label3.Visible = False
+            Label4.Visible = False
+            Label5.Visible = False
+            RichTextBox1.Visible = False
+            CmbBxCargos.Visible = False
+            CmbBxFrecuencia.Visible = False
+            CmbBxPruebas.Visible = False
+            CmbBxTipoEntrenamiento.Visible = False
+            PanelAdmin.Visible = True
         End If
+    End Sub
+
+    Public Sub LlenarCmbBxUsuarios()
+        CmbBxPruebas.Items.Clear()
+        CmbBxPruebas.Enabled = True
+        Dim query As String = " Select UsuarioID, Nombre from Usuarios
+                                where activo = 1;"
+        Dim cmd As New MySqlCommand(query, conn)
+        Dim sqlAdap As New MySqlDataAdapter(cmd)
+        Dim dtRecord As New DataTable
+        sqlAdap.Fill(dtRecord)
+        CmbBxPruebas.DataSource = dtRecord
+        CmbBxPruebas.DisplayMember = "Nombre"
+        CmbBxPruebas.ValueMember = "UsuarioID"
+        CmbBxPruebas.Text = ""
+        CmbBxPruebas.SelectedValue = 0
+    End Sub
+
+    Public Sub LlenarCmbBxPruebas()
+        CmbBxPruebas.Items.Clear()
+        CmbBxPruebas.Enabled = True
+        Dim query As String = " Select PruebaID from Pruebas
+                                where activa = 1;"
+        Dim cmd As New MySqlCommand(query, conn)
+        Dim sqlAdap As New MySqlDataAdapter(cmd)
+        Dim dtRecord As New DataTable
+        sqlAdap.Fill(dtRecord)
+        CmbBxPruebas.DataSource = dtRecord
+        CmbBxPruebas.DisplayMember = "PruebaID"
+        CmbBxPruebas.ValueMember = "PruebaID"
+        CmbBxPruebas.Text = ""
+        CmbBxPruebas.SelectedValue = 0
+    End Sub
+
+    Public Sub LlenarCmbBxCargos()
+        CmbBxCargos.Items.Clear()
+        CmbBxCargos.Enabled = True
+        Dim query As String = " Select CargoNo, Nombre from Cargos;"
+        Dim cmd As New MySqlCommand(query, conn)
+        Dim sqlAdap As New MySqlDataAdapter(cmd)
+        Dim dtRecord As New DataTable
+        sqlAdap.Fill(dtRecord)
+        CmbBxCargos.DataSource = dtRecord
+        CmbBxCargos.DisplayMember = "Nombre"
+        CmbBxCargos.ValueMember = "CargoNo"
+        CmbBxCargos.Text = ""
+        CmbBxCargos.SelectedValue = 0
     End Sub
 
     Public Sub LlenarCmbBxTipoEntrenamiento()
@@ -358,11 +481,173 @@ Public Class Form1
             CargarDGVAdmin()
 
         ElseIf nombre_tabla = "Cargos" Then
+            Dim llave As String
+            Dim Cargo As String = TxtBxCodigoEntrenamiento.Text
 
-        ElseIf nombre_tabla = "Pruebas de cada Cargo" Then
+            Try
+                conn.Open()
+                Dim cmd As New MySqlCommand(String.Format("SELECT MAX(CargoNo)+1 FROM Cargos;"), conn)
+                llave = Convert.ToString(cmd.ExecuteScalar())
+                conn.Close()
+            Catch ex As Exception
+                MsgBox(ex.Message, False, "Error")
+                conn.Close()
+                Exit Sub
+            End Try
+
+            Try
+                conn.Open()
+                Dim cmd As New MySqlCommand(String.Format("INSERT INTO Cargos VALUES ('" & llave & "', '" & Cargo & "');"), conn)
+                cmd.ExecuteNonQuery()
+                MsgBox("Cargo Agregado Satisfactoriamente", False, "Cargo Creado")
+                conn.Close()
+            Catch ex As MySqlException
+                MsgBox(ex.Message, False, "Error")
+                conn.Close()
+                Exit Sub
+            End Try
+            CargarDGVAdmin()
+
+
+        ElseIf nombre_tabla = "Entrenamientos por Cargo" Then
+
+            Dim pruebaID As String = CmbBxPruebas.SelectedValue.ToString
+            Dim Cargo As String = CmbBxCargos.SelectedValue.ToString
+
+            Try
+                conn.Open()
+                Dim cmd As New MySqlCommand(String.Format("INSERT INTO rel_cargos_pruebas VALUES ('" & pruebaID & "', '" & Cargo & "');"), conn)
+                Console.WriteLine(cmd)
+                cmd.ExecuteNonQuery()
+                MsgBox("Registro Agregado Satisfactoriamente", False, "Registro Agregado")
+            Catch ex As MySqlException
+                MsgBox(ex.Message, False, "Error")
+                conn.Close()
+                Exit Sub
+            End Try
+            conn.Close()
+            CargarDGVAdmin()
+
+        ElseIf nombre_tabla = "Tipos de Entrenamiento" Then
+
+            Dim llave As String
+            Dim TEntrenamiento As String = TxtBxCodigoEntrenamiento.Text
+
+            Try
+                conn.Open()
+                Dim cmd As New MySqlCommand(String.Format("SELECT MAX(TipoPruebaID)+1 FROM tipo_pruebas;"), conn)
+                llave = Convert.ToString(cmd.ExecuteScalar())
+                conn.Close()
+            Catch ex As Exception
+                MsgBox(ex.Message, False, "Error")
+                conn.Close()
+                Exit Sub
+            End Try
+
+            Try
+                conn.Open()
+                Dim cmd As New MySqlCommand(String.Format("INSERT INTO tipo_pruebas VALUES ('" & llave & "', '" & TEntrenamiento & "');"), conn)
+                cmd.ExecuteNonQuery()
+                MsgBox("Tipo de Entrenamiento Agregado Satisfactoriamente", False, "Tipo de Entrenamiento Creado")
+                conn.Close()
+            Catch ex As MySqlException
+                MsgBox(ex.Message, False, "Error")
+                conn.Close()
+                Exit Sub
+            End Try
+            CargarDGVAdmin()
 
         ElseIf nombre_tabla = "Cargos del usuario" Then
+            Dim UsuarioID As String = CmbBxPruebas.SelectedValue.ToString
+            Dim Cargo As String = CmbBxCargos.SelectedValue.ToString
 
+            Try
+                conn.Open()
+                Dim cmd As New MySqlCommand(String.Format("INSERT INTO rel_cargos_usuarios VALUES ('" & Cargo & "', '" & UsuarioID & "');"), conn)
+                Console.WriteLine(cmd)
+                cmd.ExecuteNonQuery()
+                MsgBox("Registro Agregado Satisfactoriamente", False, "Registro Agregado")
+            Catch ex As MySqlException
+                MsgBox(ex.Message, False, "Error")
+                conn.Close()
+                Exit Sub
+            End Try
+            conn.Close()
+            CargarDGVAdmin()
+        End If
+    End Sub
+
+    Private Sub BtnEliminarRegistro_Click(sender As Object, e As EventArgs) Handles BtnEliminarRegistro.Click
+        If MessageBox.Show("Desea eliminar/deshabilitar el registro seleccionado ?", "Eliminar", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+            Dim reader As MySqlDataReader
+            Dim Fila_actual_obj As Object = (DGVAdmin.CurrentRow)
+            If IsNothing(Fila_actual_obj) Then
+                MsgBox("Seleccione una fila a eliminar")
+                Exit Sub
+            End If
+
+            Dim nombre_tabla As String = CmbBxTablas.Text
+
+            If nombre_tabla = "Usuarios" Then
+                Dim fila_actual As Integer = DGVAdmin.CurrentRow.Index
+                Dim llave As String = DGVAdmin(0, (fila_actual)).Value
+                Try
+                    conn.Open()
+                    Dim query As String = "UPDATE usuarios SET Activo = '0' WHERE UsuarioID ='" & llave & "';"
+                    Dim cmd As New MySqlCommand(query, conn)
+                    reader = cmd.ExecuteReader
+                    MsgBox("El usuario ha sido deshabilitado", False, "Usuario Deshabilitado")
+                    conn.Close()
+                Catch ex As MySqlException
+                    MsgBox(ex.Message)
+                    conn.Close()
+                End Try
+            ElseIf nombre_tabla = "Entrenamientos" Then
+                Dim fila_actual As Integer = DGVAdmin.CurrentRow.Index
+                Dim llave As String = DGVAdmin(0, (fila_actual)).Value
+                Try
+                    conn.Open()
+                    Dim query As String = "UPDATE pruebas SET Activa = '0' WHERE PruebaID ='" & llave & "';"
+                    Dim cmd As New MySqlCommand(query, conn)
+                    reader = cmd.ExecuteReader
+                    MsgBox("El entrenamiento ha sido deshabilitado", False, "entrenamiento Deshabilitado")
+                    conn.Close()
+                Catch ex As MySqlException
+                    MsgBox(ex.Message)
+                    conn.Close()
+                End Try
+            ElseIf nombre_tabla = "Entrenamientos por Cargo" Then
+                Dim fila_actual As Integer = DGVAdmin.CurrentRow.Index
+                Dim llave As String = DGVAdmin(0, (fila_actual)).Value
+                Dim llave2 As String = DGVAdmin(2, (fila_actual)).Value
+                Try
+                    conn.Open()
+                    Dim query As String = "DELETE FROM `bd_entrenamiento`.`rel_cargos_pruebas` WHERE `PruebaID`='" & llave & "' and`CargoNo`='" & llave2 & "';;"
+                    Dim cmd As New MySqlCommand(query, conn)
+                    reader = cmd.ExecuteReader
+                    MsgBox("Registro Eliminado", False, "Registro Eliminado")
+                    conn.Close()
+                Catch ex As MySqlException
+                    MsgBox(ex.Message)
+                    conn.Close()
+                End Try
+            ElseIf nombre_tabla = "Cargos del usuario" Then
+                Dim fila_actual As Integer = DGVAdmin.CurrentRow.Index
+                Dim llave As String = DGVAdmin(2, (fila_actual)).Value 'cargo
+                Dim llave2 As String = DGVAdmin(3, (fila_actual)).Value 'usuario
+                Try
+                    conn.Open()
+                    Dim query As String = "DELETE FROM `bd_entrenamiento`.`rel_cargos_usuarios` WHERE `UsuarioID`='" & llave2 & "' and`CargoNo`='" & llave & "';;"
+                    Dim cmd As New MySqlCommand(query, conn)
+                    reader = cmd.ExecuteReader
+                    MsgBox("Registro Eliminado", False, "Registro Eliminado")
+                    conn.Close()
+                Catch ex As MySqlException
+                    MsgBox(ex.Message)
+                    conn.Close()
+                End Try
+            End If
+            CargarDGVAdmin()
         End If
     End Sub
 
