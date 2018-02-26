@@ -137,7 +137,7 @@ Public Class Form1
             FechaFin.Value = FechaFin.MaxDate
             Exit Sub
         End Try
-
+        EntVencidos.Select()
     End Sub
 
     Private Sub Cargar_Codigos_Entrenamientos()
@@ -659,5 +659,68 @@ Public Class Form1
         Else
             Label5.ForeColor = Color.Black
         End If
+    End Sub
+
+
+
+    Private Sub EntVencidos_Enter(sender As Object, e As EventArgs) Handles EntVencidos.Enter
+        Dim reader As MySqlDataReader
+        Try
+            Dim cmd As New MySqlCommand("select pruebas.Nombre as 'Prueba', usuarios.Nombre, Fecha_realizada as 'Ultimo Entrenamiento', Fecha_Siguiente as 'Proximo entrenamiento', Entrenador 
+                                        from rel_prueba_usuarios inner join usuarios on rel_prueba_usuarios.UsuarioID = usuarios.UsuarioID
+                                        inner join pruebas on rel_prueba_usuarios.PruebaID = pruebas.PruebaID
+                                        where fecha_siguiente < (select now());", conn)
+            conn.Open()
+            Console.WriteLine("Entrenamientos Vencidos")
+
+            reader = cmd.ExecuteReader()
+
+            Dim table As New DataTable
+            table.Load(reader)
+            DGVEntVencidos.DataSource = table
+            DGVEntVencidos.ReadOnly = True
+            DGVEntVencidos.AllowUserToResizeColumns = True
+            DGVEntVencidos.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+
+            reader.Close()
+            conn.Close()
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+            conn.Close()
+        Finally
+            reader.Close()
+            conn.Close()
+        End Try
+    End Sub
+
+    Private Sub EntProximos_Enter(sender As Object, e As EventArgs) Handles EntProximos.Enter
+        Dim reader As MySqlDataReader
+        Try
+            Dim cmd As New MySqlCommand("select pruebas.Nombre, usuarios.Nombre, Fecha_realizada, Fecha_Siguiente, Entrenador 
+                                        from rel_prueba_usuarios inner join usuarios on rel_prueba_usuarios.UsuarioID = usuarios.UsuarioID
+                                        inner join pruebas on rel_prueba_usuarios.PruebaID = pruebas.PruebaID
+                                        where fecha_siguiente between (select now()) and date_add(date_format(now(),'%Y,%m,%d'), interval 1 month) ;", conn)
+            conn.Open()
+
+            Console.WriteLine("Entrenamientos Proximos")
+
+            reader = cmd.ExecuteReader()
+
+            Dim table As New DataTable
+            table.Load(reader)
+            DGVEntProximos.DataSource = table
+            DGVEntProximos.ReadOnly = True
+            DGVEntProximos.AllowUserToResizeColumns = True
+            DGVEntProximos.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+
+            reader.Close()
+            conn.Close()
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+            conn.Close()
+        Finally
+            reader.Close()
+            conn.Close()
+        End Try
     End Sub
 End Class

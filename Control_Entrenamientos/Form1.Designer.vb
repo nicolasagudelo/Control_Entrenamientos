@@ -25,7 +25,12 @@ Partial Class Form1
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Manejo = New System.Windows.Forms.TabPage()
+        Me.TabControl2 = New System.Windows.Forms.TabControl()
+        Me.EntVencidos = New System.Windows.Forms.TabPage()
+        Me.DGVEntVencidos = New System.Windows.Forms.DataGridView()
+        Me.EntProximos = New System.Windows.Forms.TabPage()
+        Me.Reportes = New System.Windows.Forms.TabPage()
         Me.LblCodigoEntrenamiento = New System.Windows.Forms.Label()
         Me.CmbBxCodigoEntrenamiento = New System.Windows.Forms.ComboBox()
         Me.BtnFiltrarFechas = New System.Windows.Forms.Button()
@@ -36,7 +41,7 @@ Partial Class Form1
         Me.FechaFin = New System.Windows.Forms.DateTimePicker()
         Me.LblFechaInicio = New System.Windows.Forms.Label()
         Me.FechaInicio = New System.Windows.Forms.DateTimePicker()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Administracion = New System.Windows.Forms.TabPage()
         Me.PanelAdmin = New System.Windows.Forms.Panel()
         Me.CmbBxCargos = New System.Windows.Forms.ComboBox()
         Me.CmbBxPruebas = New System.Windows.Forms.ComboBox()
@@ -56,13 +61,20 @@ Partial Class Form1
         Me.BtnNuevoRegistro = New System.Windows.Forms.Button()
         Me.DGVAdmin = New System.Windows.Forms.DataGridView()
         Me.CmbBxTablas = New System.Windows.Forms.ComboBox()
+        Me.DGVEntProximos = New System.Windows.Forms.DataGridView()
         Me.TabControl1.SuspendLayout()
-        Me.TabPage1.SuspendLayout()
+        Me.Manejo.SuspendLayout()
+        Me.TabControl2.SuspendLayout()
+        Me.EntVencidos.SuspendLayout()
+        CType(Me.DGVEntVencidos, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.EntProximos.SuspendLayout()
+        Me.Reportes.SuspendLayout()
         CType(Me.DGVEntrenamientos, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TabPage2.SuspendLayout()
+        Me.Administracion.SuspendLayout()
         Me.PanelAdmin.SuspendLayout()
         Me.GroupBoxControlesTablas.SuspendLayout()
         CType(Me.DGVAdmin, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DGVEntProximos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -71,8 +83,9 @@ Partial Class Form1
         Me.TabControl1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Controls.Add(Me.Manejo)
+        Me.TabControl1.Controls.Add(Me.Reportes)
+        Me.TabControl1.Controls.Add(Me.Administracion)
         Me.TabControl1.Location = New System.Drawing.Point(0, 0)
         Me.TabControl1.Multiline = True
         Me.TabControl1.Name = "TabControl1"
@@ -80,25 +93,78 @@ Partial Class Form1
         Me.TabControl1.Size = New System.Drawing.Size(1077, 550)
         Me.TabControl1.TabIndex = 0
         '
-        'TabPage1
+        'Manejo
         '
-        Me.TabPage1.BackColor = System.Drawing.SystemColors.Control
-        Me.TabPage1.Controls.Add(Me.LblCodigoEntrenamiento)
-        Me.TabPage1.Controls.Add(Me.CmbBxCodigoEntrenamiento)
-        Me.TabPage1.Controls.Add(Me.BtnFiltrarFechas)
-        Me.TabPage1.Controls.Add(Me.DGVEntrenamientos)
-        Me.TabPage1.Controls.Add(Me.LblNEntrenamientos)
-        Me.TabPage1.Controls.Add(Me.LblNumeroEntrenamientos)
-        Me.TabPage1.Controls.Add(Me.LblFechaFin)
-        Me.TabPage1.Controls.Add(Me.FechaFin)
-        Me.TabPage1.Controls.Add(Me.LblFechaInicio)
-        Me.TabPage1.Controls.Add(Me.FechaInicio)
-        Me.TabPage1.Location = New System.Drawing.Point(23, 4)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1050, 542)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "TabPage1"
+        Me.Manejo.BackColor = System.Drawing.SystemColors.Control
+        Me.Manejo.Controls.Add(Me.TabControl2)
+        Me.Manejo.Location = New System.Drawing.Point(23, 4)
+        Me.Manejo.Name = "Manejo"
+        Me.Manejo.Size = New System.Drawing.Size(1050, 542)
+        Me.Manejo.TabIndex = 2
+        Me.Manejo.Text = "Manejo"
+        '
+        'TabControl2
+        '
+        Me.TabControl2.Controls.Add(Me.EntVencidos)
+        Me.TabControl2.Controls.Add(Me.EntProximos)
+        Me.TabControl2.Location = New System.Drawing.Point(0, 0)
+        Me.TabControl2.Name = "TabControl2"
+        Me.TabControl2.SelectedIndex = 0
+        Me.TabControl2.Size = New System.Drawing.Size(1050, 546)
+        Me.TabControl2.TabIndex = 0
+        '
+        'EntVencidos
+        '
+        Me.EntVencidos.BackColor = System.Drawing.SystemColors.Control
+        Me.EntVencidos.Controls.Add(Me.DGVEntVencidos)
+        Me.EntVencidos.Location = New System.Drawing.Point(4, 22)
+        Me.EntVencidos.Name = "EntVencidos"
+        Me.EntVencidos.Padding = New System.Windows.Forms.Padding(3)
+        Me.EntVencidos.Size = New System.Drawing.Size(1042, 520)
+        Me.EntVencidos.TabIndex = 0
+        Me.EntVencidos.Text = "Entrenamientos Vencidos"
+        '
+        'DGVEntVencidos
+        '
+        Me.DGVEntVencidos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.DGVEntVencidos.BackgroundColor = System.Drawing.SystemColors.Control
+        Me.DGVEntVencidos.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.DGVEntVencidos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DGVEntVencidos.Location = New System.Drawing.Point(3, 3)
+        Me.DGVEntVencidos.Name = "DGVEntVencidos"
+        Me.DGVEntVencidos.Size = New System.Drawing.Size(1033, 511)
+        Me.DGVEntVencidos.TabIndex = 0
+        '
+        'EntProximos
+        '
+        Me.EntProximos.BackColor = System.Drawing.SystemColors.Control
+        Me.EntProximos.Controls.Add(Me.DGVEntProximos)
+        Me.EntProximos.Location = New System.Drawing.Point(4, 22)
+        Me.EntProximos.Name = "EntProximos"
+        Me.EntProximos.Padding = New System.Windows.Forms.Padding(3)
+        Me.EntProximos.Size = New System.Drawing.Size(1042, 520)
+        Me.EntProximos.TabIndex = 1
+        Me.EntProximos.Text = "Entrenamientos Proximos"
+        '
+        'Reportes
+        '
+        Me.Reportes.BackColor = System.Drawing.SystemColors.Control
+        Me.Reportes.Controls.Add(Me.LblCodigoEntrenamiento)
+        Me.Reportes.Controls.Add(Me.CmbBxCodigoEntrenamiento)
+        Me.Reportes.Controls.Add(Me.BtnFiltrarFechas)
+        Me.Reportes.Controls.Add(Me.DGVEntrenamientos)
+        Me.Reportes.Controls.Add(Me.LblNEntrenamientos)
+        Me.Reportes.Controls.Add(Me.LblNumeroEntrenamientos)
+        Me.Reportes.Controls.Add(Me.LblFechaFin)
+        Me.Reportes.Controls.Add(Me.FechaFin)
+        Me.Reportes.Controls.Add(Me.LblFechaInicio)
+        Me.Reportes.Controls.Add(Me.FechaInicio)
+        Me.Reportes.Location = New System.Drawing.Point(23, 4)
+        Me.Reportes.Name = "Reportes"
+        Me.Reportes.Padding = New System.Windows.Forms.Padding(3)
+        Me.Reportes.Size = New System.Drawing.Size(1050, 542)
+        Me.Reportes.TabIndex = 0
+        Me.Reportes.Text = "Reportes"
         '
         'LblCodigoEntrenamiento
         '
@@ -111,6 +177,8 @@ Partial Class Form1
         '
         'CmbBxCodigoEntrenamiento
         '
+        Me.CmbBxCodigoEntrenamiento.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.CmbBxCodigoEntrenamiento.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
         Me.CmbBxCodigoEntrenamiento.FormattingEnabled = True
         Me.CmbBxCodigoEntrenamiento.Location = New System.Drawing.Point(358, 45)
         Me.CmbBxCodigoEntrenamiento.Name = "CmbBxCodigoEntrenamiento"
@@ -192,19 +260,19 @@ Partial Class Form1
         Me.FechaInicio.TabIndex = 27
         Me.FechaInicio.Value = New Date(2017, 9, 14, 10, 3, 34, 0)
         '
-        'TabPage2
+        'Administracion
         '
-        Me.TabPage2.BackColor = System.Drawing.SystemColors.Control
-        Me.TabPage2.Controls.Add(Me.PanelAdmin)
-        Me.TabPage2.Controls.Add(Me.GroupBoxControlesTablas)
-        Me.TabPage2.Controls.Add(Me.DGVAdmin)
-        Me.TabPage2.Controls.Add(Me.CmbBxTablas)
-        Me.TabPage2.Location = New System.Drawing.Point(23, 4)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1050, 542)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "TabPage2"
+        Me.Administracion.BackColor = System.Drawing.SystemColors.Control
+        Me.Administracion.Controls.Add(Me.PanelAdmin)
+        Me.Administracion.Controls.Add(Me.GroupBoxControlesTablas)
+        Me.Administracion.Controls.Add(Me.DGVAdmin)
+        Me.Administracion.Controls.Add(Me.CmbBxTablas)
+        Me.Administracion.Location = New System.Drawing.Point(23, 4)
+        Me.Administracion.Name = "Administracion"
+        Me.Administracion.Padding = New System.Windows.Forms.Padding(3)
+        Me.Administracion.Size = New System.Drawing.Size(1050, 542)
+        Me.Administracion.TabIndex = 1
+        Me.Administracion.Text = "Administracion"
         '
         'PanelAdmin
         '
@@ -416,6 +484,17 @@ Partial Class Form1
         Me.CmbBxTablas.Size = New System.Drawing.Size(184, 21)
         Me.CmbBxTablas.TabIndex = 0
         '
+        'DGVEntProximos
+        '
+        Me.DGVEntProximos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.DGVEntProximos.BackgroundColor = System.Drawing.SystemColors.Control
+        Me.DGVEntProximos.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.DGVEntProximos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DGVEntProximos.Location = New System.Drawing.Point(5, 5)
+        Me.DGVEntProximos.Name = "DGVEntProximos"
+        Me.DGVEntProximos.Size = New System.Drawing.Size(1033, 511)
+        Me.DGVEntProximos.TabIndex = 1
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -426,20 +505,26 @@ Partial Class Form1
         Me.Name = "Form1"
         Me.Text = "Form1"
         Me.TabControl1.ResumeLayout(False)
-        Me.TabPage1.ResumeLayout(False)
-        Me.TabPage1.PerformLayout()
+        Me.Manejo.ResumeLayout(False)
+        Me.TabControl2.ResumeLayout(False)
+        Me.EntVencidos.ResumeLayout(False)
+        CType(Me.DGVEntVencidos, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.EntProximos.ResumeLayout(False)
+        Me.Reportes.ResumeLayout(False)
+        Me.Reportes.PerformLayout()
         CType(Me.DGVEntrenamientos, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TabPage2.ResumeLayout(False)
+        Me.Administracion.ResumeLayout(False)
         Me.PanelAdmin.ResumeLayout(False)
         Me.PanelAdmin.PerformLayout()
         Me.GroupBoxControlesTablas.ResumeLayout(False)
         CType(Me.DGVAdmin, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DGVEntProximos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
 
     Friend WithEvents TabControl1 As TabControl
-    Friend WithEvents TabPage1 As TabPage
+    Friend WithEvents Reportes As TabPage
     Friend WithEvents BtnFiltrarFechas As Button
     Friend WithEvents DGVEntrenamientos As DataGridView
     Friend WithEvents LblNEntrenamientos As Label
@@ -448,7 +533,7 @@ Partial Class Form1
     Friend WithEvents FechaFin As DateTimePicker
     Friend WithEvents LblFechaInicio As Label
     Friend WithEvents FechaInicio As DateTimePicker
-    Friend WithEvents TabPage2 As TabPage
+    Friend WithEvents Administracion As TabPage
     Friend WithEvents LblCodigoEntrenamiento As Label
     Friend WithEvents CmbBxCodigoEntrenamiento As ComboBox
     Friend WithEvents GroupBoxControlesTablas As GroupBox
@@ -470,4 +555,10 @@ Partial Class Form1
     Friend WithEvents Label5 As Label
     Friend WithEvents CmbBxPruebas As ComboBox
     Friend WithEvents CmbBxCargos As ComboBox
+    Friend WithEvents Manejo As TabPage
+    Friend WithEvents TabControl2 As TabControl
+    Friend WithEvents EntVencidos As TabPage
+    Friend WithEvents DGVEntVencidos As DataGridView
+    Friend WithEvents EntProximos As TabPage
+    Friend WithEvents DGVEntProximos As DataGridView
 End Class
