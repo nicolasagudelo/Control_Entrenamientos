@@ -2,10 +2,12 @@
 
 Imports MySql.Data.MySqlClient
 Imports System.Configuration
-Imports ZKFPEngXControl
+Imports Word = Microsoft.Office.Interop.Word
+Imports excel = Microsoft.Office.Interop.Excel
 
 Public Class Form1
     Dim conn As New MySqlConnection
+
     Private Sub BtnFiltrarFechas_Click(sender As Object, e As EventArgs) Handles BtnFiltrarFechas.Click
 
         Dim reader As MySqlDataReader
@@ -120,6 +122,11 @@ Public Class Form1
         FechaInicio.Value = FechaInicio.MinDate
         FechaFin.Format = DateTimePickerFormat.Custom
         FechaFin.CustomFormat = "yyyy-MM-dd"
+        FechaInicio2.Format = DateTimePickerFormat.Custom
+        FechaInicio2.CustomFormat = "yyyy-MM-dd"
+        FechaInicio2.Value = FechaInicio.MinDate
+        FechaFin2.Format = DateTimePickerFormat.Custom
+        FechaFin2.CustomFormat = "yyyy-MM-dd"
         Cargar_Codigos_Entrenamientos()
         Try
             conn.Open()
@@ -128,6 +135,9 @@ Public Class Form1
             FechaFin.MaxDate = fecha_servidor.ToString("yyyy-MM-dd HH:mm:ss")
             FechaInicio.MaxDate = FechaFin.MaxDate
             FechaFin.Value = FechaFin.MaxDate
+            FechaFin2.MaxDate = fecha_servidor.ToString("yyyy-MM-dd HH:mm:ss")
+            FechaInicio2.MaxDate = FechaFin.MaxDate
+            FechaFin2.Value = FechaFin.MaxDate
             conn.Close()
         Catch ex As Exception
             MsgBox(ex.Message, False, "No se puede obtener la fecha de la base de datos se tomara la hora local")
@@ -135,6 +145,9 @@ Public Class Form1
             FechaFin.MaxDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
             FechaInicio.MaxDate = FechaFin.MaxDate
             FechaFin.Value = FechaFin.MaxDate
+            FechaFin2.MaxDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            FechaInicio2.MaxDate = FechaFin.MaxDate
+            FechaFin2.Value = FechaFin.MaxDate
             Exit Sub
         End Try
         EntVencidos.Select()
@@ -154,6 +167,12 @@ Public Class Form1
         CmbBxCodigoEntrenamiento.ValueMember = "PruebaID"
         CmbBxCodigoEntrenamiento.Text = ""
         CmbBxCodigoEntrenamiento.SelectedValue = 0
+        CmbBxCodigoEnt2.DataSource = dtRecord
+        CmbBxCodigoEnt2.DisplayMember = "PruebaID"
+        CmbBxCodigoEnt2.ValueMember = "PruebaID"
+        CmbBxCodigoEnt2.Text = ""
+        CmbBxCodigoEnt2.SelectedValue = 0
+
 
     End Sub
 
@@ -666,9 +685,16 @@ Public Class Form1
     Private Sub EntVencidos_Enter(sender As Object, e As EventArgs) Handles EntVencidos.Enter
         Dim reader As MySqlDataReader
         Try
-            Dim cmd As New MySqlCommand("select pruebas.Nombre as 'Prueba', usuarios.Nombre, Fecha_realizada as 'Ultimo Entrenamiento', Fecha_Siguiente as 'Proximo entrenamiento', Entrenador 
-                                        from rel_prueba_usuarios inner join usuarios on rel_prueba_usuarios.UsuarioID = usuarios.UsuarioID
-                                        inner join pruebas on rel_prueba_usuarios.PruebaID = pruebas.PruebaID
+            Dim cmd As New MySqlCommand("SELECT pruebas.Nombre as 'Prueba', usuarios.Nombre as 'Personal', tt.Fecha_realizada, tt.Fecha_Siguiente, tt.Entrenador 
+                                        FROM rel_prueba_usuarios tt inner join usuarios on tt.UsuarioID = usuarios.UsuarioID
+                                        inner join pruebas on tt.PruebaID = pruebas.PruebaID
+                                        INNER JOIN
+                                            (SELECT PruebaID, UsuarioID, fecha_realizada, MAX(Fecha_siguiente) AS MaxDateTime, Entrenador
+                                            FROM rel_prueba_usuarios
+                                            GROUP BY PruebaID, UsuarioID) groupedtt 
+                                        ON tt.PruebaID = groupedtt.PruebaID
+                                        and tt.UsuarioID = groupedtt.usuarioID
+                                        AND tt.fecha_Siguiente = groupedtt.MaxDateTime
                                         where fecha_siguiente < (select now());", conn)
             conn.Open()
             Console.WriteLine("Entrenamientos Vencidos")
@@ -696,9 +722,16 @@ Public Class Form1
     Private Sub EntProximos_Enter(sender As Object, e As EventArgs) Handles EntProximos.Enter
         Dim reader As MySqlDataReader
         Try
-            Dim cmd As New MySqlCommand("select pruebas.Nombre, usuarios.Nombre, Fecha_realizada, Fecha_Siguiente, Entrenador 
-                                        from rel_prueba_usuarios inner join usuarios on rel_prueba_usuarios.UsuarioID = usuarios.UsuarioID
-                                        inner join pruebas on rel_prueba_usuarios.PruebaID = pruebas.PruebaID
+            Dim cmd As New MySqlCommand("SELECT pruebas.Nombre as 'Prueba', usuarios.Nombre as 'Personal', tt.Fecha_realizada, tt.Fecha_Siguiente, tt.Entrenador 
+                                        FROM rel_prueba_usuarios tt inner join usuarios on tt.UsuarioID = usuarios.UsuarioID
+                                        inner join pruebas on tt.PruebaID = pruebas.PruebaID
+                                        INNER JOIN
+                                            (SELECT PruebaID, UsuarioID, fecha_realizada, MAX(Fecha_siguiente) AS MaxDateTime, Entrenador
+                                            FROM rel_prueba_usuarios
+                                            GROUP BY PruebaID, UsuarioID) groupedtt 
+                                        ON tt.PruebaID = groupedtt.PruebaID
+                                        and tt.UsuarioID = groupedtt.usuarioID
+                                        AND tt.fecha_Siguiente = groupedtt.MaxDateTime
                                         where fecha_siguiente between (select now()) and date_add(date_format(now(),'%Y,%m,%d'), interval 1 month) ;", conn)
             conn.Open()
 
@@ -723,4 +756,285 @@ Public Class Form1
             conn.Close()
         End Try
     End Sub
+
+    Private Sub DGVToWord_Click(sender As Object, e As EventArgs) Handles DGVToWord.Click
+        If TabControl1.SelectedTab Is Manejo Then
+            If TabControl2.SelectedTab Is EntVencidos Then
+                exportToWord(DGVEntVencidos)
+            ElseIf TabControl2.SelectedTab Is EntProximos Then
+                exportToWord(DGVEntProximos)
+            End If
+        ElseIf TabControl1.SelectedTab Is Reportes Then
+            exportToWord(DGVEntrenamientos)
+        End If
+    End Sub
+
+    Private Sub DGVtoExcel_Click(sender As Object, e As EventArgs) Handles DGVtoExcel.Click
+        If TabControl1.SelectedTab Is Manejo Then
+            If TabControl2.SelectedTab Is EntVencidos Then
+                exportToExcel(DGVEntVencidos)
+            ElseIf TabControl2.SelectedTab Is EntProximos Then
+                exportToExcel(DGVEntProximos)
+            End If
+        ElseIf TabControl1.SelectedTab Is Reportes Then
+            exportToExcel(DGVEntrenamientos)
+        End If
+    End Sub
+
+    Public Sub exportToWord(ByVal dgv As DataGridView)
+        ' Create Word Application
+        Dim oWord As Word.Application = DirectCast(CreateObject("Word.Application"), Word.Application)
+
+        ' Create new word document
+        Dim oDoc As Word.Document = oWord.Documents.Add()
+        oWord.Visible = True
+
+        Dim headers = (From ch In dgv.Columns
+                       Let header = DirectCast(DirectCast(ch, DataGridViewColumn).HeaderCell, DataGridViewColumnHeaderCell)
+                       Select header.Value).ToArray()
+        Dim headerText() As String = Array.ConvertAll(headers, Function(v) v.ToString)
+
+        Dim items() = (From r In dgv.Rows
+                       Let row = DirectCast(r, DataGridViewRow)
+                       Where Not row.IsNewRow
+                       Select (From cell In row.Cells
+                               Let c = DirectCast(cell, DataGridViewCell)
+                               Select c.Value).ToArray()).ToArray()
+
+        Dim table As String = String.Join(vbTab, headerText) & Environment.NewLine
+        For Each a In items
+            Dim t() As String = Array.ConvertAll(a, Function(v) v.ToString)
+            table &= String.Join(vbTab, t) & Environment.NewLine
+        Next
+        table = table.TrimEnd(CChar(Environment.NewLine))
+        Clipboard.SetText(table)
+
+        Dim oTable As Word.Table = oDoc.Tables.Add(oDoc.Bookmarks.Item("\endofdoc").Range, items.Count + 1, headers.Count)
+
+        oTable.Range.Paste()
+
+        'make the first row bold, fs 14 + change textcolor
+        oTable.Rows.Item(1).Range.Font.Bold = &H98967E
+        oTable.Rows.Item(1).Range.Font.Size = 14
+        oTable.Rows.Item(1).Range.Font.Color = Word.WdColor.wdColorWhite
+
+        'change backcolor of first row
+        oTable.Rows.Item(1).Range.Shading.Texture = Word.WdTextureIndex.wdTextureNone
+        oTable.Rows.Item(1).Range.Shading.ForegroundPatternColor = Word.WdColor.wdColorAutomatic
+        oTable.Rows.Item(1).Range.Shading.BackgroundPatternColor = Word.WdColor.wdColorPaleBlue
+
+        'set table borders
+        With oTable.Range.Tables(1)
+            With .Borders(Word.WdBorderType.wdBorderLeft)
+                .LineStyle = Word.WdLineStyle.wdLineStyleSingle
+                .LineWidth = Word.WdLineWidth.wdLineWidth100pt
+                .Color = Word.WdColor.wdColorAutomatic
+            End With
+            With .Borders(Word.WdBorderType.wdBorderRight)
+                .LineStyle = Word.WdLineStyle.wdLineStyleSingle
+                .LineWidth = Word.WdLineWidth.wdLineWidth100pt
+                .Color = Word.WdColor.wdColorAutomatic
+            End With
+            With .Borders(Word.WdBorderType.wdBorderTop)
+                .LineStyle = Word.WdLineStyle.wdLineStyleSingle
+                .LineWidth = Word.WdLineWidth.wdLineWidth100pt
+                .Color = Word.WdColor.wdColorAutomatic
+            End With
+            With .Borders(Word.WdBorderType.wdBorderBottom)
+                .LineStyle = Word.WdLineStyle.wdLineStyleSingle
+                .LineWidth = Word.WdLineWidth.wdLineWidth100pt
+                .Color = Word.WdColor.wdColorAutomatic
+            End With
+            With .Borders(Word.WdBorderType.wdBorderHorizontal)
+                .LineStyle = Word.WdLineStyle.wdLineStyleSingle
+                .LineWidth = Word.WdLineWidth.wdLineWidth050pt
+                .Color = Word.WdColor.wdColorAutomatic
+            End With
+            With .Borders(Word.WdBorderType.wdBorderVertical)
+                .LineStyle = Word.WdLineStyle.wdLineStyleSingle
+                .LineWidth = Word.WdLineWidth.wdLineWidth050pt
+                .Color = Word.WdColor.wdColorAutomatic
+            End With
+            .Borders(Word.WdBorderType.wdBorderDiagonalDown).LineStyle = Word.WdLineStyle.wdLineStyleNone
+            .Borders(Word.WdBorderType.wdBorderDiagonalUp).LineStyle = Word.WdLineStyle.wdLineStyleNone
+            .Borders.Shadow = False
+        End With
+
+    End Sub
+
+    Public Sub exportToExcel(ByVal dgv As DataGridView)
+        Dim xlApp As excel.Application
+        Dim xlWorkBook As excel.Workbook
+        Dim xlWorkSheet As excel.Worksheet
+        Dim misValue As Object = System.Reflection.Missing.Value
+
+        xlApp = New excel.ApplicationClass
+        xlWorkBook = xlApp.Workbooks.Add(misValue)
+        xlWorkSheet = DirectCast(xlWorkBook.Sheets("hoja1"), excel.Worksheet)
+
+        xlApp.Visible = True
+
+        Dim headers = (From ch In dgv.Columns
+                       Let header = DirectCast(DirectCast(ch, DataGridViewColumn).HeaderCell, DataGridViewColumnHeaderCell)
+                       Select header.Value).ToArray()
+        Dim headerText() As String = Array.ConvertAll(headers, Function(v) v.ToString)
+
+        Dim items() = (From r In dgv.Rows
+                       Let row = DirectCast(r, DataGridViewRow)
+                       Where Not row.IsNewRow
+                       Select (From cell In row.Cells
+                               Let c = DirectCast(cell, DataGridViewCell)
+                               Select c.Value).ToArray()).ToArray()
+
+        Dim table As String = String.Join(vbTab, headerText) & Environment.NewLine
+        For Each a In items
+            Dim t() As String = Array.ConvertAll(a, Function(v) v.ToString)
+            table &= String.Join(vbTab, t) & Environment.NewLine
+        Next
+        table = table.TrimEnd(CChar(Environment.NewLine))
+        Clipboard.SetText(table)
+
+        Dim alphabet() As Char = "abcdefghijklmnopqrstuvwxyz".ToUpper.ToCharArray
+
+        Dim range As excel.Range = xlWorkSheet.Range("B2:" & alphabet(headerText.Length) & (items.Length + 2).ToString)
+
+        range.Select()
+        xlWorkSheet.Paste()
+
+        range.Borders(excel.XlBordersIndex.xlDiagonalDown).LineStyle = excel.XlLineStyle.xlLineStyleNone
+        range.Borders(excel.XlBordersIndex.xlDiagonalUp).LineStyle = excel.XlLineStyle.xlLineStyleNone
+        With range.Borders(excel.XlBordersIndex.xlEdgeLeft)
+            .LineStyle = excel.XlLineStyle.xlContinuous
+            .ColorIndex = 1 'black
+            .TintAndShade = 0
+            .Weight = excel.XlBorderWeight.xlMedium
+        End With
+        With range.Borders(excel.XlBordersIndex.xlEdgeTop)
+            .LineStyle = excel.XlLineStyle.xlContinuous
+            .ColorIndex = 1 'black
+            .TintAndShade = 0
+            .Weight = excel.XlBorderWeight.xlMedium
+        End With
+        With range.Borders(excel.XlBordersIndex.xlEdgeBottom)
+            .LineStyle = excel.XlLineStyle.xlContinuous
+            .ColorIndex = 1 'black
+            .TintAndShade = 0
+            .Weight = excel.XlBorderWeight.xlMedium
+        End With
+        With range.Borders(excel.XlBordersIndex.xlEdgeRight)
+            .LineStyle = excel.XlLineStyle.xlContinuous
+            .ColorIndex = 1 'black
+            .TintAndShade = 0
+            .Weight = excel.XlBorderWeight.xlMedium
+        End With
+        With range.Borders(excel.XlBordersIndex.xlInsideVertical)
+            .LineStyle = excel.XlLineStyle.xlContinuous
+            .ColorIndex = 1 'black
+            .TintAndShade = 0
+            .Weight = excel.XlBorderWeight.xlThin
+        End With
+        With range.Borders(excel.XlBordersIndex.xlInsideHorizontal)
+            .LineStyle = excel.XlLineStyle.xlContinuous
+            .ColorIndex = 1 'black
+            .TintAndShade = 0
+            .Weight = excel.XlBorderWeight.xlThin
+        End With
+
+    End Sub
+
+    Private Sub Administracion_Enter(sender As Object, e As EventArgs) Handles Administracion.Enter
+        DGVtoExcel.Visible = False
+        DGVToWord.Visible = False
+    End Sub
+
+    Private Sub Administracion_Leave(sender As Object, e As EventArgs) Handles Administracion.Leave
+        DGVtoExcel.Visible = True
+        DGVToWord.Visible = True
+    End Sub
+
+    Private Sub BtnFiltrar2_Click(sender As Object, e As EventArgs) Handles BtnFiltrar2.Click
+        Dim reader As MySqlDataReader
+        If CmbBxCodigoEnt2.SelectedValue = "" Then
+
+            If FechaInicio2.Value > FechaFin2.Value Then
+                MsgBox("La fecha inicial no puede estar despues de la fecha final")
+                Exit Sub
+            End If
+            Dim fecha_inicial As String = FechaInicio2.Value.ToString("yyyy-MM-dd HH:mm:ss")
+            Dim fecha_final As String = FechaFin2.Value.ToString("yyyy-MM-dd HH:mm:ss")
+
+            Try
+                Dim cmd As New MySqlCommand("SELECT pruebas.Nombre as 'Prueba', usuarios.Nombre as 'Personal', tt.Fecha_realizada, tt.Fecha_Siguiente, tt.Entrenador 
+                                        FROM rel_prueba_usuarios tt inner join usuarios on tt.UsuarioID = usuarios.UsuarioID
+                                        inner join pruebas on tt.PruebaID = pruebas.PruebaID
+                                        INNER JOIN
+                                            (SELECT PruebaID, UsuarioID, fecha_realizada, MAX(Fecha_siguiente) AS MaxDateTime, Entrenador
+                                            FROM rel_prueba_usuarios
+                                            GROUP BY PruebaID, UsuarioID) groupedtt 
+                                        ON tt.PruebaID = groupedtt.PruebaID
+                                        and tt.UsuarioID = groupedtt.usuarioID
+                                        AND tt.fecha_Siguiente = groupedtt.MaxDateTime
+                                        where fecha_siguiente between '" & fecha_inicial & "' and '" & fecha_final & "'", conn)
+                conn.Open()
+                Console.WriteLine("Entrenamientos entre fechas")
+
+                reader = cmd.ExecuteReader()
+
+                Dim table As New DataTable
+                table.Load(reader)
+                DGVEntNoRealizados.DataSource = table
+                DGVEntNoRealizados.ReadOnly = True
+                DGVEntNoRealizados.AllowUserToResizeColumns = True
+                DGVEntNoRealizados.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+
+                reader.Close()
+                conn.Close()
+            Catch ex As MySqlException
+                MsgBox(ex.Message)
+                conn.Close()
+            End Try
+
+        Else
+
+            If FechaInicio2.Value > FechaFin2.Value Then
+                MsgBox("La fecha inicial no puede estar despues de la fecha final")
+                Exit Sub
+            End If
+            Dim fecha_inicial As String = FechaInicio2.Value.ToString("yyyy-MM-dd HH:mm:ss")
+            Dim fecha_final As String = FechaFin2.Value.ToString("yyyy-MM-dd HH:mm:ss")
+
+            Try
+                Dim cmd As New MySqlCommand("SELECT pruebas.Nombre as 'Prueba', usuarios.Nombre as 'Personal', tt.Fecha_realizada, tt.Fecha_Siguiente, tt.Entrenador 
+                                        FROM rel_prueba_usuarios tt inner join usuarios on tt.UsuarioID = usuarios.UsuarioID
+                                        inner join pruebas on tt.PruebaID = pruebas.PruebaID
+                                        INNER JOIN
+                                            (SELECT PruebaID, UsuarioID, fecha_realizada, MAX(Fecha_siguiente) AS MaxDateTime, Entrenador
+                                            FROM rel_prueba_usuarios
+                                            GROUP BY PruebaID, UsuarioID) groupedtt 
+                                        ON tt.PruebaID = groupedtt.PruebaID
+                                        and tt.UsuarioID = groupedtt.usuarioID
+                                        AND tt.fecha_Siguiente = groupedtt.MaxDateTime
+                                        where fecha_siguiente between '" & fecha_inicial & "' and '" & fecha_final & "' and pruebas.pruebaid = '" & CmbBxCodigoEnt2.SelectedValue.ToString & "'", conn)
+                conn.Open()
+                Console.WriteLine("Entrenamientos no realizados entre fechas")
+
+                reader = cmd.ExecuteReader()
+
+                Dim table As New DataTable
+                table.Load(reader)
+                DGVEntNoRealizados.DataSource = table
+                DGVEntNoRealizados.ReadOnly = True
+                DGVEntNoRealizados.AllowUserToResizeColumns = True
+                DGVEntNoRealizados.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+
+                reader.Close()
+                conn.Close()
+            Catch ex As MySqlException
+                MsgBox(ex.Message)
+                conn.Close()
+            End Try
+
+        End If
+    End Sub
 End Class
+

@@ -13,3 +13,19 @@ C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\
 C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.xml
 C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.pdb
 C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.vbproj.ResolveComReference.cache
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\bin\Debug\Control_Entrenamientos.exe.config
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\bin\Debug\Control_Entrenamientos.exe
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\bin\Debug\Control_Entrenamientos.pdb
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\bin\Debug\Control_Entrenamientos.xml
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\bin\Debug\MySql.Data.dll
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\bin\Debug\MySql.Data.xml
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.vbprojResolveAssemblyReference.cache
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.vbproj.ResolveComReference.cache
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form1.resources
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Resources.resources
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.vbproj.GenerateResource.Cache
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.exe
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.xml
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.pdb
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\bin\Debug\Microsoft.Office.Interop.Excel.dll
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\bin\Debug\Microsoft.Office.Interop.Excel.xml
