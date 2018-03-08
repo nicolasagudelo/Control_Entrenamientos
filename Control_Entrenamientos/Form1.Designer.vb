@@ -25,6 +25,9 @@ Partial Class Form1
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.RegistrarEntrenamiento = New System.Windows.Forms.TabPage()
+        Me.TxtBxEntrenador = New System.Windows.Forms.TextBox()
+        Me.LblEntrenador = New System.Windows.Forms.Label()
         Me.Manejo = New System.Windows.Forms.TabPage()
         Me.TabControl2 = New System.Windows.Forms.TabControl()
         Me.EntVencidos = New System.Windows.Forms.TabPage()
@@ -73,10 +76,20 @@ Partial Class Form1
         Me.BtnNuevoRegistro = New System.Windows.Forms.Button()
         Me.DGVAdmin = New System.Windows.Forms.DataGridView()
         Me.CmbBxTablas = New System.Windows.Forms.ComboBox()
-        Me.PrintDocument1 = New System.Drawing.Printing.PrintDocument()
         Me.DGVToWord = New System.Windows.Forms.Button()
         Me.DGVtoExcel = New System.Windows.Forms.Button()
+        Me.LblPrueba = New System.Windows.Forms.Label()
+        Me.CmbBxPruebaRealizada = New System.Windows.Forms.ComboBox()
+        Me.Fecha_Prueba = New System.Windows.Forms.DateTimePicker()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.BtnAgregarEntrenados = New System.Windows.Forms.Button()
+        Me.DGVListado = New System.Windows.Forms.DataGridView()
+        Me.BtnHuellaEntrenador = New System.Windows.Forms.Button()
+        Me.Entrenado = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Calificación_Entrenador = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Pasa = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TabControl1.SuspendLayout()
+        Me.RegistrarEntrenamiento.SuspendLayout()
         Me.Manejo.SuspendLayout()
         Me.TabControl2.SuspendLayout()
         Me.EntVencidos.SuspendLayout()
@@ -93,6 +106,7 @@ Partial Class Form1
         Me.PanelAdmin.SuspendLayout()
         Me.GroupBoxControlesTablas.SuspendLayout()
         CType(Me.DGVAdmin, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DGVListado, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -101,6 +115,7 @@ Partial Class Form1
         Me.TabControl1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TabControl1.Controls.Add(Me.RegistrarEntrenamiento)
         Me.TabControl1.Controls.Add(Me.Manejo)
         Me.TabControl1.Controls.Add(Me.Reportes)
         Me.TabControl1.Controls.Add(Me.Administracion)
@@ -110,6 +125,41 @@ Partial Class Form1
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(1077, 550)
         Me.TabControl1.TabIndex = 0
+        '
+        'RegistrarEntrenamiento
+        '
+        Me.RegistrarEntrenamiento.BackColor = System.Drawing.SystemColors.Control
+        Me.RegistrarEntrenamiento.Controls.Add(Me.DGVListado)
+        Me.RegistrarEntrenamiento.Controls.Add(Me.BtnAgregarEntrenados)
+        Me.RegistrarEntrenamiento.Controls.Add(Me.Fecha_Prueba)
+        Me.RegistrarEntrenamiento.Controls.Add(Me.Label8)
+        Me.RegistrarEntrenamiento.Controls.Add(Me.CmbBxPruebaRealizada)
+        Me.RegistrarEntrenamiento.Controls.Add(Me.LblPrueba)
+        Me.RegistrarEntrenamiento.Controls.Add(Me.BtnHuellaEntrenador)
+        Me.RegistrarEntrenamiento.Controls.Add(Me.TxtBxEntrenador)
+        Me.RegistrarEntrenamiento.Controls.Add(Me.LblEntrenador)
+        Me.RegistrarEntrenamiento.Location = New System.Drawing.Point(23, 4)
+        Me.RegistrarEntrenamiento.Name = "RegistrarEntrenamiento"
+        Me.RegistrarEntrenamiento.Padding = New System.Windows.Forms.Padding(3)
+        Me.RegistrarEntrenamiento.Size = New System.Drawing.Size(1050, 542)
+        Me.RegistrarEntrenamiento.TabIndex = 3
+        Me.RegistrarEntrenamiento.Text = "Registrar Entrenamiento"
+        '
+        'TxtBxEntrenador
+        '
+        Me.TxtBxEntrenador.Location = New System.Drawing.Point(86, 32)
+        Me.TxtBxEntrenador.Name = "TxtBxEntrenador"
+        Me.TxtBxEntrenador.Size = New System.Drawing.Size(210, 20)
+        Me.TxtBxEntrenador.TabIndex = 1
+        '
+        'LblEntrenador
+        '
+        Me.LblEntrenador.AutoSize = True
+        Me.LblEntrenador.Location = New System.Drawing.Point(83, 16)
+        Me.LblEntrenador.Name = "LblEntrenador"
+        Me.LblEntrenador.Size = New System.Drawing.Size(62, 13)
+        Me.LblEntrenador.TabIndex = 0
+        Me.LblEntrenador.Text = "Entrenador:"
         '
         'Manejo
         '
@@ -644,6 +694,90 @@ Partial Class Form1
         Me.DGVtoExcel.Text = "Exportar a Excel"
         Me.DGVtoExcel.UseVisualStyleBackColor = True
         '
+        'LblPrueba
+        '
+        Me.LblPrueba.AutoSize = True
+        Me.LblPrueba.Location = New System.Drawing.Point(377, 16)
+        Me.LblPrueba.Name = "LblPrueba"
+        Me.LblPrueba.Size = New System.Drawing.Size(94, 13)
+        Me.LblPrueba.TabIndex = 3
+        Me.LblPrueba.Text = "Prueba Realizada:"
+        '
+        'CmbBxPruebaRealizada
+        '
+        Me.CmbBxPruebaRealizada.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.CmbBxPruebaRealizada.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.CmbBxPruebaRealizada.FormattingEnabled = True
+        Me.CmbBxPruebaRealizada.Location = New System.Drawing.Point(380, 31)
+        Me.CmbBxPruebaRealizada.Name = "CmbBxPruebaRealizada"
+        Me.CmbBxPruebaRealizada.Size = New System.Drawing.Size(373, 21)
+        Me.CmbBxPruebaRealizada.TabIndex = 4
+        '
+        'Fecha_Prueba
+        '
+        Me.Fecha_Prueba.Location = New System.Drawing.Point(785, 32)
+        Me.Fecha_Prueba.MinDate = New Date(2015, 1, 1, 0, 0, 0, 0)
+        Me.Fecha_Prueba.Name = "Fecha_Prueba"
+        Me.Fecha_Prueba.Size = New System.Drawing.Size(222, 20)
+        Me.Fecha_Prueba.TabIndex = 29
+        Me.Fecha_Prueba.Value = New Date(2017, 9, 14, 10, 3, 34, 0)
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(782, 16)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(123, 13)
+        Me.Label8.TabIndex = 30
+        Me.Label8.Text = "Fecha en que se realizo:"
+        '
+        'BtnAgregarEntrenados
+        '
+        Me.BtnAgregarEntrenados.Location = New System.Drawing.Point(86, 92)
+        Me.BtnAgregarEntrenados.Name = "BtnAgregarEntrenados"
+        Me.BtnAgregarEntrenados.Size = New System.Drawing.Size(210, 23)
+        Me.BtnAgregarEntrenados.TabIndex = 31
+        Me.BtnAgregarEntrenados.Text = "Crear Listado de Entrenados"
+        Me.BtnAgregarEntrenados.UseVisualStyleBackColor = True
+        '
+        'DGVListado
+        '
+        Me.DGVListado.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.DGVListado.BackgroundColor = System.Drawing.SystemColors.Control
+        Me.DGVListado.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DGVListado.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Entrenado, Me.Calificación_Entrenador, Me.Pasa})
+        Me.DGVListado.Location = New System.Drawing.Point(86, 138)
+        Me.DGVListado.Name = "DGVListado"
+        Me.DGVListado.Size = New System.Drawing.Size(921, 384)
+        Me.DGVListado.TabIndex = 32
+        '
+        'BtnHuellaEntrenador
+        '
+        Me.BtnHuellaEntrenador.Image = Global.Control_Entrenamientos.My.Resources.Resources.if_finger__biometric__identity__fingerprint_2536751__1_
+        Me.BtnHuellaEntrenador.Location = New System.Drawing.Point(302, 16)
+        Me.BtnHuellaEntrenador.Name = "BtnHuellaEntrenador"
+        Me.BtnHuellaEntrenador.Size = New System.Drawing.Size(41, 36)
+        Me.BtnHuellaEntrenador.TabIndex = 2
+        Me.BtnHuellaEntrenador.UseVisualStyleBackColor = True
+        '
+        'Entrenado
+        '
+        Me.Entrenado.HeaderText = "Entrenado"
+        Me.Entrenado.Name = "Entrenado"
+        Me.Entrenado.ReadOnly = True
+        '
+        'Calificación_Entrenador
+        '
+        Me.Calificación_Entrenador.HeaderText = "Calificación Entrenador"
+        Me.Calificación_Entrenador.Name = "Calificación_Entrenador"
+        Me.Calificación_Entrenador.ReadOnly = True
+        '
+        'Pasa
+        '
+        Me.Pasa.HeaderText = "Pasa"
+        Me.Pasa.Name = "Pasa"
+        Me.Pasa.ReadOnly = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -656,6 +790,8 @@ Partial Class Form1
         Me.Name = "Form1"
         Me.Text = "Form1"
         Me.TabControl1.ResumeLayout(False)
+        Me.RegistrarEntrenamiento.ResumeLayout(False)
+        Me.RegistrarEntrenamiento.PerformLayout()
         Me.Manejo.ResumeLayout(False)
         Me.TabControl2.ResumeLayout(False)
         Me.EntVencidos.ResumeLayout(False)
@@ -675,6 +811,7 @@ Partial Class Form1
         Me.PanelAdmin.PerformLayout()
         Me.GroupBoxControlesTablas.ResumeLayout(False)
         CType(Me.DGVAdmin, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DGVListado, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -717,7 +854,6 @@ Partial Class Form1
     Friend WithEvents DGVEntVencidos As DataGridView
     Friend WithEvents EntProximos As TabPage
     Friend WithEvents DGVEntProximos As DataGridView
-    Friend WithEvents PrintDocument1 As Printing.PrintDocument
     Friend WithEvents DGVToWord As Button
     Friend WithEvents DGVtoExcel As Button
     Friend WithEvents TabControl3 As TabControl
@@ -731,4 +867,17 @@ Partial Class Form1
     Friend WithEvents Label7 As Label
     Friend WithEvents FechaFin2 As DateTimePicker
     Friend WithEvents Label9 As Label
+    Friend WithEvents RegistrarEntrenamiento As TabPage
+    Friend WithEvents TxtBxEntrenador As TextBox
+    Friend WithEvents LblEntrenador As Label
+    Friend WithEvents BtnHuellaEntrenador As Button
+    Friend WithEvents LblPrueba As Label
+    Friend WithEvents CmbBxPruebaRealizada As ComboBox
+    Friend WithEvents Fecha_Prueba As DateTimePicker
+    Friend WithEvents Label8 As Label
+    Friend WithEvents DGVListado As DataGridView
+    Friend WithEvents BtnAgregarEntrenados As Button
+    Friend WithEvents Entrenado As DataGridViewTextBoxColumn
+    Friend WithEvents Calificación_Entrenador As DataGridViewTextBoxColumn
+    Friend WithEvents Pasa As DataGridViewTextBoxColumn
 End Class

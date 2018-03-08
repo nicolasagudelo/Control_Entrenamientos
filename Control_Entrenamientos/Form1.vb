@@ -4,8 +4,20 @@ Imports MySql.Data.MySqlClient
 Imports System.Configuration
 Imports Word = Microsoft.Office.Interop.Word
 Imports excel = Microsoft.Office.Interop.Excel
+Imports System.ComponentModel
+Imports DPFP
+Imports DPFP.Capture
+Imports System.IO
 
 Public Class Form1
+    Implements EventHandler
+
+    Private Captura As Capture
+    Private Enroller As Processing.Enrollment
+    Private Delegate Sub _delegadoMuestra(ByVal text As String)
+    Private Delegate Sub _delegadoControles()
+    Private Template As Template
+
     Dim conn As New MySqlConnection
 
     Private Sub BtnFiltrarFechas_Click(sender As Object, e As EventArgs) Handles BtnFiltrarFechas.Click
@@ -127,27 +139,33 @@ Public Class Form1
         FechaInicio2.Value = FechaInicio.MinDate
         FechaFin2.Format = DateTimePickerFormat.Custom
         FechaFin2.CustomFormat = "yyyy-MM-dd"
+        Fecha_Prueba.Format = DateTimePickerFormat.Custom
+        Fecha_Prueba.CustomFormat = "yyyy-MM-dd"
         Cargar_Codigos_Entrenamientos()
         Try
             conn.Open()
             Dim cmd As New MySqlCommand(String.Format("SELECT NOW();"), conn)
             Dim fecha_servidor As DateTime = cmd.ExecuteScalar()
-            FechaFin.MaxDate = fecha_servidor.ToString("yyyy-MM-dd HH:mm:ss")
+            FechaFin.MaxDate = fecha_servidor.ToString("yyyy-MM-dd")
             FechaInicio.MaxDate = FechaFin.MaxDate
             FechaFin.Value = FechaFin.MaxDate
-            FechaFin2.MaxDate = fecha_servidor.ToString("yyyy-MM-dd HH:mm:ss")
+            FechaFin2.MaxDate = fecha_servidor.ToString("yyyy-MM-dd")
             FechaInicio2.MaxDate = FechaFin.MaxDate
             FechaFin2.Value = FechaFin.MaxDate
+            Fecha_Prueba.MaxDate = fecha_servidor.ToString("yyyy-MM-dd")
+            Fecha_Prueba.Value = Fecha_Prueba.MaxDate
             conn.Close()
         Catch ex As Exception
             MsgBox(ex.Message, False, "No se puede obtener la fecha de la base de datos se tomara la hora local")
             conn.Close()
-            FechaFin.MaxDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            FechaFin.MaxDate = DateTime.Now.ToString("yyyy-MM-dd")
             FechaInicio.MaxDate = FechaFin.MaxDate
             FechaFin.Value = FechaFin.MaxDate
-            FechaFin2.MaxDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            FechaFin2.MaxDate = DateTime.Now.ToString("yyyy-MM-dd")
             FechaInicio2.MaxDate = FechaFin.MaxDate
             FechaFin2.Value = FechaFin.MaxDate
+            Fecha_Prueba.MaxDate = DateTime.Now.ToString("yyyy-MM-dd")
+            Fecha_Prueba.Value = Fecha_Prueba.MaxDate
             Exit Sub
         End Try
         EntVencidos.Select()
@@ -156,22 +174,26 @@ Public Class Form1
     Private Sub Cargar_Codigos_Entrenamientos()
         CmbBxCodigoEntrenamiento.Items.Clear()
         CmbBxCodigoEntrenamiento.Enabled = True
-        Dim query As String = " Select PruebaID from Pruebas
+        Dim query As String = " Select PruebaID, Nombre from Pruebas
                                 where activa = 1;"
         Dim cmd As New MySqlCommand(query, conn)
         Dim sqlAdap As New MySqlDataAdapter(cmd)
         Dim dtRecord As New DataTable
         sqlAdap.Fill(dtRecord)
         CmbBxCodigoEntrenamiento.DataSource = dtRecord
-        CmbBxCodigoEntrenamiento.DisplayMember = "PruebaID"
+        CmbBxCodigoEntrenamiento.DisplayMember = "Nombre"
         CmbBxCodigoEntrenamiento.ValueMember = "PruebaID"
         CmbBxCodigoEntrenamiento.Text = ""
         CmbBxCodigoEntrenamiento.SelectedValue = 0
         CmbBxCodigoEnt2.DataSource = dtRecord
-        CmbBxCodigoEnt2.DisplayMember = "PruebaID"
+        CmbBxCodigoEnt2.DisplayMember = "Nombre"
         CmbBxCodigoEnt2.ValueMember = "PruebaID"
         CmbBxCodigoEnt2.Text = ""
         CmbBxCodigoEnt2.SelectedValue = 0
+        CmbBxPruebaRealizada.DataSource = dtRecord
+        CmbBxPruebaRealizada.DisplayMember = "Nombre"
+        CmbBxPruebaRealizada.ValueMember = "PruebaID"
+        CmbBxPruebaRealizada.Text = ""
 
 
     End Sub
@@ -760,12 +782,16 @@ Public Class Form1
     Private Sub DGVToWord_Click(sender As Object, e As EventArgs) Handles DGVToWord.Click
         If TabControl1.SelectedTab Is Manejo Then
             If TabControl2.SelectedTab Is EntVencidos Then
-                exportToWord(DGVEntVencidos)
+                exportToWord(DGVEntVencidos, "Entrenamientos vencidos.")
             ElseIf TabControl2.SelectedTab Is EntProximos Then
-                exportToWord(DGVEntProximos)
+                exportToWord(DGVEntProximos, "Entrenamientos del proximo mes.")
             End If
         ElseIf TabControl1.SelectedTab Is Reportes Then
-            exportToWord(DGVEntrenamientos)
+            If TabControl3.SelectedTab Is EntrenamientosRealizados Then
+                exportToWord(DGVEntrenamientos, "Entrenamientos Realizados entre " & FechaInicio.Value & " y " & FechaFin.Value & ".")
+            ElseIf TabControl3.SelectedTab Is EntNoRealizados Then
+                exportToWord(DGVEntNoRealizados, "Entrenamientos NO Realizados entre " & FechaInicio.Value & " y " & FechaFin.Value & ".")
+            End If
         End If
     End Sub
 
@@ -777,17 +803,31 @@ Public Class Form1
                 exportToExcel(DGVEntProximos)
             End If
         ElseIf TabControl1.SelectedTab Is Reportes Then
-            exportToExcel(DGVEntrenamientos)
+            If TabControl3.SelectedTab Is EntrenamientosRealizados Then
+                exportToExcel(DGVEntrenamientos)
+            ElseIf TabControl3.SelectedTab Is EntNoRealizados Then
+                exportToExcel(DGVEntNoRealizados)
+            End If
         End If
     End Sub
 
-    Public Sub exportToWord(ByVal dgv As DataGridView)
+    Public Sub exportToWord(ByVal dgv As DataGridView, ByVal H1 As String)
         ' Create Word Application
         Dim oWord As Word.Application = DirectCast(CreateObject("Word.Application"), Word.Application)
 
         ' Create new word document
         Dim oDoc As Word.Document = oWord.Documents.Add()
         oWord.Visible = True
+
+        Dim oPara As Word.Paragraph
+
+        oPara = oDoc.Content.Paragraphs.Add
+        oPara.Range.Text = H1
+        oPara.Range.Font.Bold = True
+        oPara.Format.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter
+        oPara.Format.SpaceAfter = 24
+        oPara.Range.Font.Size = 20
+        oPara.Range.InsertParagraphAfter()
 
         Dim headers = (From ch In dgv.Columns
                        Let header = DirectCast(DirectCast(ch, DataGridViewColumn).HeaderCell, DataGridViewColumnHeaderCell)
@@ -816,12 +856,12 @@ Public Class Form1
         'make the first row bold, fs 14 + change textcolor
         oTable.Rows.Item(1).Range.Font.Bold = &H98967E
         oTable.Rows.Item(1).Range.Font.Size = 14
-        oTable.Rows.Item(1).Range.Font.Color = Word.WdColor.wdColorWhite
+        oTable.Rows.Item(1).Range.Font.Color = Word.WdColor.wdColorBlack
 
         'change backcolor of first row
         oTable.Rows.Item(1).Range.Shading.Texture = Word.WdTextureIndex.wdTextureNone
         oTable.Rows.Item(1).Range.Shading.ForegroundPatternColor = Word.WdColor.wdColorAutomatic
-        oTable.Rows.Item(1).Range.Shading.BackgroundPatternColor = Word.WdColor.wdColorPaleBlue
+        oTable.Rows.Item(1).Range.Shading.BackgroundPatternColor = Word.WdColor.wdColorWhite
 
         'set table borders
         With oTable.Range.Tables(1)
@@ -942,12 +982,12 @@ Public Class Form1
 
     End Sub
 
-    Private Sub Administracion_Enter(sender As Object, e As EventArgs) Handles Administracion.Enter
+    Private Sub Administracion_Enter(sender As Object, e As EventArgs) Handles Administracion.Enter, RegistrarEntrenamiento.Enter
         DGVtoExcel.Visible = False
         DGVToWord.Visible = False
     End Sub
 
-    Private Sub Administracion_Leave(sender As Object, e As EventArgs) Handles Administracion.Leave
+    Private Sub Administracion_Leave(sender As Object, e As EventArgs) Handles Administracion.Leave, RegistrarEntrenamiento.Leave
         DGVtoExcel.Visible = True
         DGVToWord.Visible = True
     End Sub
@@ -1035,6 +1075,62 @@ Public Class Form1
             End Try
 
         End If
+    End Sub
+
+    Protected Sub Parar_Captura()
+        If Not Captura Is Nothing Then
+            Try
+                Captura.StopCapture()
+            Catch ex As Exception
+                MsgBox("No se puede detener la captura de la huella" & vbCrLf & ex.Message)
+            End Try
+        End If
+    End Sub
+
+    Private Sub BtnHuellaEntrenador_Click(sender As Object, e As EventArgs) Handles BtnHuellaEntrenador.Click
+        Parar_Captura()
+        conn.Close()
+        'Dim VentanaBuscar As New Form2()
+        'VentanaBuscar.ShowDialog()
+        Form2.Show()
+    End Sub
+
+    Public Sub OnComplete(Capture As Object, ReaderSerialNumber As String, Sample As Sample) Implements EventHandler.OnComplete
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Sub OnFingerGone(Capture As Object, ReaderSerialNumber As String) Implements EventHandler.OnFingerGone
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Sub OnFingerTouch(Capture As Object, ReaderSerialNumber As String) Implements EventHandler.OnFingerTouch
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Sub OnReaderConnect(Capture As Object, ReaderSerialNumber As String) Implements EventHandler.OnReaderConnect
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Sub OnReaderDisconnect(Capture As Object, ReaderSerialNumber As String) Implements EventHandler.OnReaderDisconnect
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Sub OnSampleQuality(Capture As Object, ReaderSerialNumber As String, CaptureFeedback As CaptureFeedback) Implements EventHandler.OnSampleQuality
+        Throw New NotImplementedException()
+    End Sub
+
+    Private Sub BtnAgregarEntrenados_Click(sender As Object, e As EventArgs) Handles BtnAgregarEntrenados.Click
+        Parar_Captura()
+        conn.Close()
+        'Dim VentanaBuscar As New Form2()
+        'VentanaBuscar.ShowDialog()
+        form3.ShowDialog()
+        Form4.ShowDialog()
+        Form5.ShowDialog()
+        DGVListado.Rows.Add(NombreEntrenado, CalificacionEntrenador, CalificacionEntrenado)
+        NombreEntrenado = ""
+        CalificacionEntrenador = 0
+        CalificacionEntrenado = ""
     End Sub
 End Class
 

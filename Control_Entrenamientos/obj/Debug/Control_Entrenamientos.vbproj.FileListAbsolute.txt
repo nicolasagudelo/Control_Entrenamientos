@@ -29,3 +29,15 @@ E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug
 E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.pdb
 E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\bin\Debug\Microsoft.Office.Interop.Excel.dll
 E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\bin\Debug\Microsoft.Office.Interop.Excel.xml
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\DPFPDevNET.dll
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\DPFPEngNET.dll
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\DPFPGuiNET.dll
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\DPFPShrNET.dll
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\DPFPVerNET.dll
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\DPFPCtlXWrapperNET.dll
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\DPFPCtlXTypeLibNET.dll
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\bin\Debug\DPFPShrXTypeLibNET.dll
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form2.resources
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.form3.resources
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form4.resources
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form5.resources
