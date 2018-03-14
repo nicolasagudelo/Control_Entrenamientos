@@ -141,6 +141,8 @@ Public Class Form1
         FechaFin2.CustomFormat = "yyyy-MM-dd"
         Fecha_Prueba.Format = DateTimePickerFormat.Custom
         Fecha_Prueba.CustomFormat = "yyyy-MM-dd"
+        Fecha_Prueba2.Format = DateTimePickerFormat.Custom
+        Fecha_Prueba2.CustomFormat = "yyyy-MM-dd"
         Cargar_Codigos_Entrenamientos()
         Try
             conn.Open()
@@ -154,6 +156,8 @@ Public Class Form1
             FechaFin2.Value = FechaFin.MaxDate
             Fecha_Prueba.MaxDate = fecha_servidor.ToString("yyyy-MM-dd")
             Fecha_Prueba.Value = Fecha_Prueba.MaxDate
+            Fecha_Prueba2.MaxDate = fecha_servidor.ToString("yyyy-MM-dd")
+            Fecha_Prueba2.Value = Fecha_Prueba2.MaxDate
             conn.Close()
         Catch ex As Exception
             MsgBox(ex.Message, False, "No se puede obtener la fecha de la base de datos se tomara la hora local")
@@ -166,6 +170,8 @@ Public Class Form1
             FechaFin2.Value = FechaFin.MaxDate
             Fecha_Prueba.MaxDate = DateTime.Now.ToString("yyyy-MM-dd")
             Fecha_Prueba.Value = Fecha_Prueba.MaxDate
+            Fecha_Prueba2.MaxDate = DateTime.Now.ToString("yyyy-MM-dd")
+            Fecha_Prueba2.Value = Fecha_Prueba2.MaxDate
             Exit Sub
         End Try
         EntVencidos.Select()
@@ -194,6 +200,10 @@ Public Class Form1
         CmbBxPruebaRealizada.DisplayMember = "Nombre"
         CmbBxPruebaRealizada.ValueMember = "PruebaID"
         CmbBxPruebaRealizada.Text = ""
+        CmbBxPruebaRealizada2.DataSource = dtRecord
+        CmbBxPruebaRealizada2.DisplayMember = "Nombre"
+        CmbBxPruebaRealizada2.ValueMember = "PruebaID"
+        CmbBxPruebaRealizada2.Text = ""
 
 
     End Sub
@@ -286,13 +296,12 @@ Public Class Form1
             DGVAdmin.Columns(0).Visible = False
             GroupBoxControlesTablas.Visible = True
             BtnNuevoRegistro.Text = "Agregar Usuario"
-            BtnModificarRegistro.Text = "Modificar Usuario"
             BtnEliminarRegistro.Text = "Desactivar Usuario"
             BtnNuevoRegistro.Enabled = True
-            BtnModificarRegistro.Enabled = True
+            BtnModificarRegistro.Enabled = False
             BtnEliminarRegistro.Enabled = True
             BtnNuevoRegistro.Visible = True
-            BtnModificarRegistro.Visible = True
+            BtnModificarRegistro.Visible = False
             BtnEliminarRegistro.Visible = True
         ElseIf nombre_tabla = "Entrenamientos" Then
             GroupBoxControlesTablas.Visible = True
@@ -345,7 +354,8 @@ Public Class Form1
         Dim nombre_tabla As String = CmbBxTablas.Text
 
         If nombre_tabla = "Usuarios" Then
-
+            Form7.ShowDialog()
+            CargarDGVAdmin()
         ElseIf nombre_tabla = "Entrenamientos" Then
             Label1.Text = "Codigo"
             Label2.Text = "Tipo de Entrenamiento"
@@ -792,6 +802,10 @@ Public Class Form1
             ElseIf TabControl3.SelectedTab Is EntNoRealizados Then
                 exportToWord(DGVEntNoRealizados, "Entrenamientos NO Realizados entre " & FechaInicio.Value & " y " & FechaFin.Value & ".")
             End If
+        ElseIf TabControl1.SelectedTab Is RegistrarEntrenamiento Then
+            exportToWord(DGVListado, "Lista de asistencia de entrenamiento, " & CmbBxPruebaRealizada.Text & " dictado por: " & TxtBxEntrenador.Text & " el " & Fecha_Prueba.Text)
+        ElseIf TabControl1.SelectedTab Is CalificarEntrenamiento Then
+            exportToWord(DGVCalificaciones, "Lista de calificaciones de entrenamiento, " & CmbBxPruebaRealizada.Text & " dictado por: " & TxtBxEntrenador.Text & " el " & Fecha_Prueba.Text)
         End If
     End Sub
 
@@ -808,10 +822,18 @@ Public Class Form1
             ElseIf TabControl3.SelectedTab Is EntNoRealizados Then
                 exportToExcel(DGVEntNoRealizados)
             End If
+        ElseIf TabControl1.SelectedTab Is RegistrarEntrenamiento Then
+            exportToExcel(DGVListado)
+        ElseIf TabControl1.SelectedTab Is CalificarEntrenamiento Then
+            exportToExcel(DGVCalificaciones)
         End If
     End Sub
 
     Public Sub exportToWord(ByVal dgv As DataGridView, ByVal H1 As String)
+        If dgv.Rows.Count = 0 Then
+            MsgBox("No existen datos en la tabla, agregue algunos antes de crear el documento", MsgBoxStyle.Exclamation, "Error.")
+            Exit Sub
+        End If
         ' Create Word Application
         Dim oWord As Word.Application = DirectCast(CreateObject("Word.Application"), Word.Application)
 
@@ -903,6 +925,10 @@ Public Class Form1
     End Sub
 
     Public Sub exportToExcel(ByVal dgv As DataGridView)
+        If dgv.Rows.Count = 0 Then
+            MsgBox("No existen datos en la tabla, agregue algunos antes de crear el documento", MsgBoxStyle.Exclamation, "Error.")
+            Exit Sub
+        End If
         Dim xlApp As excel.Application
         Dim xlWorkBook As excel.Workbook
         Dim xlWorkSheet As excel.Worksheet
@@ -982,15 +1008,46 @@ Public Class Form1
 
     End Sub
 
-    Private Sub Administracion_Enter(sender As Object, e As EventArgs) Handles Administracion.Enter, RegistrarEntrenamiento.Enter
+    Private Sub Administracion_Enter(sender As Object, e As EventArgs) Handles Administracion.Enter
         DGVtoExcel.Visible = False
         DGVToWord.Visible = False
     End Sub
 
-    Private Sub Administracion_Leave(sender As Object, e As EventArgs) Handles Administracion.Leave, RegistrarEntrenamiento.Leave
+    Private Sub Administracion_Leave(sender As Object, e As EventArgs) Handles Administracion.Leave
+        DGVtoExcel.Visible = True
+        DGVToWord.Visible = True
+        DGVListado.DataSource = Nothing
+        DGVListado.Rows.Clear()
+        DGVListado.Columns.Clear()
+    End Sub
+
+    Private Sub Manejo_Enter(sender As Object, e As EventArgs) Handles Manejo.Enter, Reportes.Enter
         DGVtoExcel.Visible = True
         DGVToWord.Visible = True
     End Sub
+
+    Private Sub Manejo_leave(sender As Object, e As EventArgs) Handles Manejo.Leave, Reportes.Leave
+        DGVtoExcel.Visible = False
+        DGVToWord.Visible = False
+    End Sub
+
+    Private Sub RegistrarEntrenamiento_Enter(sender As Object, e As EventArgs) Handles RegistrarEntrenamiento.Enter, CalificarEntrenamiento.Enter
+        DGVtoExcel.Visible = True
+        DGVToWord.Visible = True
+    End Sub
+
+    Private Sub RegistrarEntrenamiento_Leave(sender As Object, e As EventArgs) Handles RegistrarEntrenamiento.Leave
+        DGVtoExcel.Visible = False
+        DGVToWord.Visible = False
+        BtnHuellaEntrenador.Enabled = True
+        TxtBxEntrenador.Enabled = True
+        CmbBxPruebaRealizada.Enabled = True
+        Fecha_Prueba.Enabled = True
+        BtnAgregarEntrenados.Enabled = True
+    End Sub
+
+
+
 
     Private Sub BtnFiltrar2_Click(sender As Object, e As EventArgs) Handles BtnFiltrar2.Click
         Dim reader As MySqlDataReader
@@ -1122,15 +1179,243 @@ Public Class Form1
     Private Sub BtnAgregarEntrenados_Click(sender As Object, e As EventArgs) Handles BtnAgregarEntrenados.Click
         Parar_Captura()
         conn.Close()
-        'Dim VentanaBuscar As New Form2()
-        'VentanaBuscar.ShowDialog()
+        BtnHuellaEntrenador.Enabled = False
+        TxtBxEntrenador.Enabled = False
+        CmbBxPruebaRealizada.Enabled = False
+        Fecha_Prueba.Enabled = False
         form3.ShowDialog()
+        If Cancelar Then
+            Exit Sub
+        End If
+        If Enroll Then
+            Form7.ShowDialog()
+            Enroll = False
+            Exit Sub
+        End If
         Form4.ShowDialog()
-        Form5.ShowDialog()
-        DGVListado.Rows.Add(NombreEntrenado, CalificacionEntrenador, CalificacionEntrenado)
+        DGVListado.Rows.Add(NombreEntrenado, CalificacionEntrenador, IdEntrenado)
         NombreEntrenado = ""
         CalificacionEntrenador = 0
         CalificacionEntrenado = ""
+    End Sub
+
+
+    Private Sub BtnUploadList_Click(sender As Object, e As EventArgs) Handles BtnUploadList.Click
+
+        If DGVListado.Rows.Count = 0 Then
+            MsgBox("No existen registros que subir a la base de datos, cree un listado antes de continuar.", MsgBoxStyle.Exclamation, "Advertencia")
+            Exit Sub
+        ElseIf TxtBxEntrenador.Text.Trim = "" Then
+            MsgBox("Escriba el nombre del entrenador antes de continuar", MsgBoxStyle.Exclamation, "Advertencia")
+
+        ElseIf CmbBxPruebaRealizada.SelectedIndex = 0 Then
+            MsgBox("Seleccione la prueba cuyo entrenamiento fue dictado", MsgBoxStyle.Exclamation, "Advertencia")
+        ElseIf CmbBxPruebaRealizada.SelectedIndex = -1 Then
+            MsgBox("La prueba escrita no hace parte de las pruebas registradas en la base de datos.", MsgBoxStyle.Exclamation, "Error.")
+        End If
+
+        If MessageBox.Show("¿Seguro que desea subir el listado actual a la base de datos?", "Confirmacion", MessageBoxButtons.YesNo) = DialogResult.No Then
+            Exit Sub
+        End If
+
+        Dim Entrenador As String = TxtBxEntrenador.Text.Trim
+        Dim Prueba As String = CmbBxPruebaRealizada.SelectedValue
+        Dim Fecha_Realizada As String = Fecha_Prueba.Text
+        Dim frecuencia As String
+        Dim fecha_siguiente As String
+
+        Try
+            conn.Open()
+            Dim cmd As New MySqlCommand(String.Format("select frecuencia from pruebas where pruebaID = '" & Prueba & "';"), conn)
+            frecuencia = cmd.ExecuteScalar
+            Dim cmd2 As New MySqlCommand(String.Format("select date_add('" & Fecha_Realizada & "', interval " & frecuencia & ");"), conn)
+            fecha_siguiente = cmd2.ExecuteScalar
+            conn.Close()
+        Catch ex As Exception
+            MsgBox("Error durante el proceso " & ex.Message, MsgBoxStyle.Exclamation, "Error.")
+            conn.Close()
+            Exit Sub
+        Finally
+            conn.Dispose()
+            conn.Close()
+        End Try
+
+        Dim Entrenado As Integer
+        Dim CalEnt As Integer
+
+        For Each row In DGVListado.Rows
+            CalEnt = row.cells(1).value
+            Entrenado = row.cells(2).value
+            Try
+                conn.Open()
+                Dim cmd As New MySqlCommand(String.Format("INSERT INTO `bd_entrenamiento`.`rel_prueba_usuarios` (`PruebaID`, `UsuarioID`, `Fecha_realizada`, `Fecha_Siguiente`, `Entrenador`, `CalificacionEntrenador`) VALUES (@Prueba, @UsuId, @Fecha_Realizada, @Fecha_Siguiente, @Entrenador, @CalificacionEnt);"), conn)
+                With cmd.Parameters
+                    .AddWithValue("Prueba", Prueba)
+                    .AddWithValue("UsuId", Entrenado)
+                    .AddWithValue("Fecha_Realizada", Fecha_Realizada)
+                    .AddWithValue("Fecha_Siguiente", fecha_siguiente)
+                    .AddWithValue("Entrenador", Entrenador)
+                    .AddWithValue("CalificacionEnt", CalEnt)
+                End With
+                cmd.ExecuteNonQuery()
+                conn.Close()
+            Catch ex As Exception
+                MsgBox("Error subiendo el listado, " & ex.Message, MsgBoxStyle.Exclamation, "Error.")
+                conn.Close()
+                Exit Sub
+            Finally
+                conn.Dispose()
+                conn.Close()
+            End Try
+        Next
+
+        MsgBox("Listado Actualizado satisfactoriamente", MsgBoxStyle.Information, "Info.")
+        DGVListado.Rows.Clear()
+        TxtBxEntrenador.Clear()
+        CmbBxPruebaRealizada.SelectedIndex = -1
+
+    End Sub
+
+    Private Sub BtnHuella2_Click(sender As Object, e As EventArgs) Handles BtnHuella2.Click
+        Parar_Captura()
+        conn.Close()
+        'Dim VentanaBuscar As New Form2()
+        'VentanaBuscar.ShowDialog()
+        Form6.Show()
+    End Sub
+
+    Private Sub BtnCargarLista_Click(sender As Object, e As EventArgs) Handles BtnCargarLista.Click
+
+        Dim adapter As New MySqlDataAdapter
+        Dim ds As New DataSet
+        Dim dt As New DataTable
+        Try
+            conn.Open()
+            Dim cmd As New MySqlCommand("SELECT rel_prueba_usuarios.PruebaId, rel_prueba_usuarios.UsuarioId, usuarios.Nombre, Fecha_Siguiente, Entrenador from rel_prueba_usuarios inner join usuarios on rel_prueba_usuarios.UsuarioID = usuarios.usuarioId
+                                     where Fecha_realizada = @FR and Entrenador = @Ent and PruebaID = @PID and Pasa is null", conn)
+            With cmd.Parameters
+                .AddWithValue("FR", Fecha_Prueba2.Text)
+                .AddWithValue("Ent", TxtBxEntrenador2.Text.Trim)
+                .AddWithValue("PID", CmbBxPruebaRealizada2.SelectedValue)
+            End With
+            adapter.SelectCommand = cmd
+            adapter.Fill(ds)
+            dt = ds.Tables(0)
+            DGVCalificaciones.DataSource = dt
+            conn.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            conn.Close()
+        End Try
+
+        Dim combo As New DataGridViewComboBoxColumn
+        combo.HeaderText = "Pasa"
+        combo.Name = "Pasa"
+        combo.Items.Add("SI")
+        combo.Items.Add("NO")
+
+        DGVCalificaciones.Columns.Add(combo)
+        DGVCalificaciones.Columns(0).ReadOnly = True
+        DGVCalificaciones.Columns(1).ReadOnly = True
+        DGVCalificaciones.Columns(0).Visible = False
+        DGVCalificaciones.Columns(1).Visible = False
+        DGVCalificaciones.Columns(2).ReadOnly = True
+        DGVCalificaciones.Columns(3).ReadOnly = True
+        DGVCalificaciones.Columns(4).ReadOnly = True
+        If DGVCalificaciones.Rows.Count = 0 Then
+            MsgBox("No existen calificaciones pendientes con los filtros elegidos", MsgBoxStyle.Information, "Info")
+            Exit Sub
+        End If
+        BtnHuella2.Enabled = False
+        TxtBxEntrenador2.Enabled = False
+        CmbBxPruebaRealizada2.Enabled = False
+        Fecha_Prueba2.Enabled = False
+        BtnCargarLista.Enabled = False
+    End Sub
+
+    Private Sub BtnSubirCalificaciones_Click(sender As Object, e As EventArgs) Handles BtnSubirCalificaciones.Click
+        If DGVCalificaciones.Rows.Count = 0 Then
+            MsgBox("No existen registros que subir a la base de datos, cree un listado antes de continuar.", MsgBoxStyle.Exclamation, "Advertencia")
+            Exit Sub
+        End If
+
+        If MessageBox.Show("¿Seguro que desea subir el listado actual de calificaciones a la base de datos?", "Confirmacion", MessageBoxButtons.YesNo) = DialogResult.No Then
+            Exit Sub
+        End If
+
+        Dim Calificacion As String
+        Dim PID As String
+        Dim UsID As String
+        Dim Fecha As String = Fecha_Prueba2.Text
+        Dim nombre As String
+        For Each row In DGVCalificaciones.Rows
+            PID = row.cells(0).value
+            UsID = row.cells(1).value
+            nombre = row.cells(2).value
+            Calificacion = row.cells(5).value
+
+            If Calificacion = "NO" Then
+                Dim fecha_siguiente_new As String
+                Try
+                    conn.Open()
+                    Dim cmd As New MySqlCommand("select date_add(@fecharealizada, interval 15 day);", conn)
+                    cmd.Parameters.AddWithValue("fecharealizada", Fecha)
+                    fecha_siguiente_new = cmd.ExecuteScalar
+                    Dim cmd2 As New MySqlCommand("UPDATE `bd_entrenamiento`.`rel_prueba_usuarios` SET `Fecha_Siguiente`= @fecha_siguiente, `Pasa`='NO' 
+                                                  WHERE `PruebaID`=@PID and`UsuarioID`=@USID and`Fecha_realizada`=@FechaR;", conn)
+                    With cmd2.Parameters
+                        .AddWithValue("fecha_siguiente", fecha_siguiente_new)
+                        .AddWithValue("PID", PID)
+                        .AddWithValue("USID", UsID)
+                        .AddWithValue("FechaR", Fecha)
+                    End With
+                    cmd2.ExecuteNonQuery()
+                    conn.Close()
+                Catch ex As Exception
+                    MsgBox("Error actualizando la calificacion de:, " & nombre & vbCrLf & ex.Message, MsgBoxStyle.Exclamation, "Error.")
+                Finally
+                    conn.Dispose()
+                    conn.Close()
+                End Try
+            ElseIf Calificacion = "SI" Then
+                Try
+                    conn.Open()
+                    Dim cmd As New MySqlCommand("UPDATE `bd_entrenamiento`.`rel_prueba_usuarios` SET `Pasa`='SI' 
+                                                  WHERE `PruebaID`=@PID and`UsuarioID`=@USID and`Fecha_realizada`=@FechaR;", conn)
+                    With cmd.Parameters
+                        .AddWithValue("PID", PID)
+                        .AddWithValue("USID", UsID)
+                        .AddWithValue("FechaR", Fecha)
+                    End With
+                    cmd.ExecuteNonQuery()
+                    conn.Close()
+                Catch ex As Exception
+                    MsgBox("Error actualizando la calificacion de:, " & nombre & vbCrLf & ex.Message, MsgBoxStyle.Exclamation, "Error.")
+                Finally
+                    conn.Dispose()
+                    conn.Close()
+                End Try
+            Else
+                MsgBox(nombre & " queda pendiente de calificacion.", MsgBoxStyle.Information, "Info.")
+            End If
+
+        Next
+        MsgBox("Calificaciones Actualizadas", MsgBoxStyle.Information, "Info.")
+        BtnCargarLista.Enabled = True
+        BtnCargarLista.PerformClick()
+        BtnCargarLista.Enabled = False
+
+    End Sub
+
+    Private Sub CalificarEntrenamiento_Leave(sender As Object, e As EventArgs) Handles CalificarEntrenamiento.Leave
+        DGVCalificaciones.DataSource = Nothing
+        DGVCalificaciones.Rows.Clear()
+        DGVCalificaciones.Columns.Clear()
+        BtnHuella2.Enabled = True
+        TxtBxEntrenador2.Enabled = True
+        CmbBxPruebaRealizada2.Enabled = True
+        Fecha_Prueba2.Enabled = True
+        BtnCargarLista.Enabled = True
     End Sub
 End Class
 

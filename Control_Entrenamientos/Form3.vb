@@ -7,8 +7,11 @@ Imports System.IO
 
 Module ListaEntrenados
     Public NombreEntrenado As String = ""
+    Public IdEntrenado As Integer
     Public CalificacionEntrenador As Integer = 0
     Public CalificacionEntrenado As String = ""
+    Public Cancelar As Boolean = False
+    Public Enroll As Boolean = False
 End Module
 
 Public Class form3
@@ -17,6 +20,7 @@ Public Class form3
     Private Template As Template
     Private Verificador As Verification.Verification
     Private Delegate Sub _delegateTxtBxEntrenado()
+    Private Delegate Sub _CerrarForm()
 
     Dim conn As New MySqlConnection
     Private Sub connect()
@@ -92,6 +96,7 @@ Public Class form3
 
 
     Dim nombre As String = ""
+    Dim Id As Integer
     Public Sub OnComplete(Capture As Object, ReaderSerialNumber As String, Sample As Sample) Implements EventHandler.OnComplete
         LlenarPictureBoxHuella(ConvertirHuellaaMapadeBits(Sample))
         Dim Caracteristicas As FeatureSet = ExtraerCaracteristicasHuellas(Sample, Processing.DataPurpose.Verification)
@@ -111,6 +116,7 @@ Public Class form3
                         Verificador.Verify(Caracteristicas, Template, result)
                         If result.Verified Then
                             nombre = read("Nombre")
+                            Id = read("UsuarioID")
                             verificado = True
                             Exit While
                         End If
@@ -120,10 +126,13 @@ Public Class form3
                 End While
                 If verificado = False Then
                     If MessageBox.Show("No se encontro registro del usuario en el base de datos" & vbCrLf & "¿Desea agregar este usuario a la base de datos?" & vbCrLf & " (Si presiona NO podra reintentar colocar la huella en el lector y realizar la busqueda nuevamente)", "Info.", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-                        Form6.showdialog()
+                        Parar_Captura()
+                        Enroll = True
+                        Dim deleg2 As New _CerrarForm(AddressOf CerrarForm)
+                        Me.Invoke(deleg2)
                     End If
                 Else
-                        Dim deleg As New _delegateTxtBxEntrenado(AddressOf EscribirEntrenado)
+                    Dim deleg As New _delegateTxtBxEntrenado(AddressOf EscribirEntrenado)
                     Me.Invoke(deleg) 'Si quiero cambiar un label o textbox en la form debo implementar el uso de delegados
                 End If
                 read.Close()
@@ -132,14 +141,21 @@ Public Class form3
                 conn.Dispose()
             Catch ex As Exception
                 MsgBox("No se logro conectar a la base de datos:" & vbCrLf & ex.Message)
-                conn.Close()
-                Me.Close()
+                Dim deleg2 As New _CerrarForm(AddressOf CerrarForm)
+                Me.Invoke(deleg2)
             End Try
         End If
     End Sub
 
+    Private Sub CerrarForm()
+        conn.Close()
+        conn.Dispose()
+        Me.Close()
+    End Sub
+
     Private Sub EscribirEntrenado()
         NombreEntrenado = nombre
+        IdEntrenado = Id
         conn.Close()
         conn.Dispose()
         Me.Close()
@@ -166,6 +182,7 @@ Public Class form3
     End Sub
 
     Private Sub form3_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Parar_Captura()
         connect()
         Init()
         Iniciar_Captura()
@@ -173,10 +190,17 @@ Public Class form3
 
     Private Sub form3_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         If NombreEntrenado = "" Then
-            MsgBox("Coloque la huella del entrenado para registrar su asistencia.", MsgBoxStyle.Information, "Info.")
-            e.Cancel = True
-            Exit Sub
+            If Enroll Then
+                Parar_Captura()
+                Exit Sub
+            End If
+            If MessageBox.Show("¿Esta seguro que desea salir?", "Info.", MessageBoxButtons.YesNo) = DialogResult.No Then
+                e.Cancel = True
+            Else
+                Cancelar = True
+                Parar_Captura()
+            End If
         End If
-        Parar_Captura()
+
     End Sub
 End Class

@@ -22,6 +22,7 @@ Partial Class form3
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(form3))
         Me.ImagenHuellaEntrenado = New System.Windows.Forms.PictureBox()
         CType(Me.ImagenHuellaEntrenado, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -40,10 +41,11 @@ Partial Class form3
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(277, 261)
-        Me.ControlBox = False
         Me.Controls.Add(Me.ImagenHuellaEntrenado)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MinimizeBox = False
         Me.Name = "form3"
-        Me.Text = "Form3"
+        Me.Text = "Registrar Asistencia"
         CType(Me.ImagenHuellaEntrenado, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 

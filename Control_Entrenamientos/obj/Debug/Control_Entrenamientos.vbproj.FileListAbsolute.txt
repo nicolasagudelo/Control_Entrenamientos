@@ -41,3 +41,9 @@ C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\
 C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.form3.resources
 C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form4.resources
 C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form5.resources
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form2.resources
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.form3.resources
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form4.resources
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form5.resources
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form6.resources
+E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form7.resources
