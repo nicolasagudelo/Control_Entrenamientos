@@ -23,8 +23,8 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.RegistrarEntrenamiento = New System.Windows.Forms.TabPage()
@@ -58,6 +58,7 @@ Partial Class Form1
         Me.DGVEntVencidos = New System.Windows.Forms.DataGridView()
         Me.EntProximos = New System.Windows.Forms.TabPage()
         Me.DGVEntProximos = New System.Windows.Forms.DataGridView()
+        Me.EntProxAno = New System.Windows.Forms.TabPage()
         Me.Reportes = New System.Windows.Forms.TabPage()
         Me.TabControl3 = New System.Windows.Forms.TabControl()
         Me.EntrenamientosRealizados = New System.Windows.Forms.TabPage()
@@ -103,6 +104,7 @@ Partial Class Form1
         Me.DGVToWord = New System.Windows.Forms.Button()
         Me.DGVtoExcel = New System.Windows.Forms.Button()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.DGVEntProxAno = New System.Windows.Forms.DataGridView()
         Me.TabControl1.SuspendLayout()
         Me.RegistrarEntrenamiento.SuspendLayout()
         CType(Me.DGVListado, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -114,6 +116,7 @@ Partial Class Form1
         CType(Me.DGVEntVencidos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.EntProximos.SuspendLayout()
         CType(Me.DGVEntProximos, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.EntProxAno.SuspendLayout()
         Me.Reportes.SuspendLayout()
         Me.TabControl3.SuspendLayout()
         Me.EntrenamientosRealizados.SuspendLayout()
@@ -124,6 +127,7 @@ Partial Class Form1
         Me.PanelAdmin.SuspendLayout()
         Me.GroupBoxControlesTablas.SuspendLayout()
         CType(Me.DGVAdmin, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DGVEntProxAno, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -401,6 +405,7 @@ Partial Class Form1
         '
         Me.TabControl2.Controls.Add(Me.EntVencidos)
         Me.TabControl2.Controls.Add(Me.EntProximos)
+        Me.TabControl2.Controls.Add(Me.EntProxAno)
         Me.TabControl2.Location = New System.Drawing.Point(0, 0)
         Me.TabControl2.Name = "TabControl2"
         Me.TabControl2.SelectedIndex = 0
@@ -438,7 +443,7 @@ Partial Class Form1
         Me.EntProximos.Padding = New System.Windows.Forms.Padding(3)
         Me.EntProximos.Size = New System.Drawing.Size(1042, 520)
         Me.EntProximos.TabIndex = 1
-        Me.EntProximos.Text = "Entrenamientos Proximos"
+        Me.EntProximos.Text = "Entrenamientos Proximo Mes"
         '
         'DGVEntProximos
         '
@@ -450,6 +455,16 @@ Partial Class Form1
         Me.DGVEntProximos.Name = "DGVEntProximos"
         Me.DGVEntProximos.Size = New System.Drawing.Size(1033, 511)
         Me.DGVEntProximos.TabIndex = 1
+        '
+        'EntProxAno
+        '
+        Me.EntProxAno.BackColor = System.Drawing.SystemColors.Control
+        Me.EntProxAno.Controls.Add(Me.DGVEntProxAno)
+        Me.EntProxAno.Location = New System.Drawing.Point(4, 22)
+        Me.EntProxAno.Name = "EntProxAno"
+        Me.EntProxAno.Size = New System.Drawing.Size(1042, 520)
+        Me.EntProxAno.TabIndex = 2
+        Me.EntProxAno.Text = "Entrenamientos Proximo Año"
         '
         'Reportes
         '
@@ -561,7 +576,7 @@ Partial Class Form1
         Me.LblNEntrenamientos.AutoSize = True
         Me.LblNEntrenamientos.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte), True)
         Me.LblNEntrenamientos.ForeColor = System.Drawing.Color.Red
-        Me.LblNEntrenamientos.Location = New System.Drawing.Point(586, 32)
+        Me.LblNEntrenamientos.Location = New System.Drawing.Point(656, 32)
         Me.LblNEntrenamientos.Name = "LblNEntrenamientos"
         Me.LblNEntrenamientos.Size = New System.Drawing.Size(21, 20)
         Me.LblNEntrenamientos.TabIndex = 32
@@ -580,7 +595,7 @@ Partial Class Form1
         'LblNumeroEntrenamientos
         '
         Me.LblNumeroEntrenamientos.AutoSize = True
-        Me.LblNumeroEntrenamientos.Location = New System.Drawing.Point(586, 16)
+        Me.LblNumeroEntrenamientos.Location = New System.Drawing.Point(656, 16)
         Me.LblNumeroEntrenamientos.Name = "LblNumeroEntrenamientos"
         Me.LblNumeroEntrenamientos.Size = New System.Drawing.Size(277, 13)
         Me.LblNumeroEntrenamientos.TabIndex = 31
@@ -865,8 +880,8 @@ Partial Class Form1
         '
         'DGVAdmin
         '
-        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.DGVAdmin.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.DGVAdmin.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.DGVAdmin.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DGVAdmin.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
@@ -874,14 +889,14 @@ Partial Class Form1
         Me.DGVAdmin.BackgroundColor = System.Drawing.SystemColors.Control
         Me.DGVAdmin.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DGVAdmin.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.ActiveBorder
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte), True)
-        DataGridViewCellStyle10.ForeColor = System.Drawing.Color.Coral
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.ControlDark
-        DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DGVAdmin.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.ActiveBorder
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte), True)
+        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.Coral
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlDark
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DGVAdmin.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.DGVAdmin.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DGVAdmin.Cursor = System.Windows.Forms.Cursors.Hand
         Me.DGVAdmin.GridColor = System.Drawing.Color.DarkRed
@@ -929,6 +944,17 @@ Partial Class Form1
         Me.ToolTip1.SetToolTip(Me.DGVtoExcel, "Exportar a Excel")
         Me.DGVtoExcel.UseVisualStyleBackColor = False
         '
+        'DGVEntProxAno
+        '
+        Me.DGVEntProxAno.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.DGVEntProxAno.BackgroundColor = System.Drawing.SystemColors.Control
+        Me.DGVEntProxAno.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.DGVEntProxAno.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DGVEntProxAno.Location = New System.Drawing.Point(5, 5)
+        Me.DGVEntProxAno.Name = "DGVEntProxAno"
+        Me.DGVEntProxAno.Size = New System.Drawing.Size(1033, 511)
+        Me.DGVEntProxAno.TabIndex = 2
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -954,6 +980,7 @@ Partial Class Form1
         CType(Me.DGVEntVencidos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.EntProximos.ResumeLayout(False)
         CType(Me.DGVEntProximos, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.EntProxAno.ResumeLayout(False)
         Me.Reportes.ResumeLayout(False)
         Me.TabControl3.ResumeLayout(False)
         Me.EntrenamientosRealizados.ResumeLayout(False)
@@ -967,6 +994,7 @@ Partial Class Form1
         Me.PanelAdmin.PerformLayout()
         Me.GroupBoxControlesTablas.ResumeLayout(False)
         CType(Me.DGVAdmin, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DGVEntProxAno, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1048,4 +1076,6 @@ Partial Class Form1
     Friend WithEvents Label12 As Label
     Friend WithEvents BtnSubirCalificaciones As Button
     Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents EntProxAno As TabPage
+    Friend WithEvents DGVEntProxAno As DataGridView
 End Class

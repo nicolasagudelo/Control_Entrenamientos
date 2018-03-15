@@ -787,12 +787,55 @@ Public Class Form1
         End Try
     End Sub
 
+    Private Sub EntProxAno_Enter(sender As Object, e As EventArgs) Handles EntProxAno.Enter
+        Dim reader As MySqlDataReader
+        Try
+            Dim año As String
+            conn.Open()
+            Dim añocmd As New MySqlCommand("select date_format(now(),'%Y') + 1;", conn)
+            año = añocmd.ExecuteScalar
+            Dim cmd As New MySqlCommand("SELECT pruebas.Nombre as 'Prueba', usuarios.Nombre as 'Personal', tt.Fecha_realizada, tt.Fecha_Siguiente, tt.Entrenador 
+                                        FROM rel_prueba_usuarios tt inner join usuarios on tt.UsuarioID = usuarios.UsuarioID
+                                        inner join pruebas on tt.PruebaID = pruebas.PruebaID
+                                        INNER JOIN
+                                            (SELECT PruebaID, UsuarioID, fecha_realizada, MAX(Fecha_siguiente) AS MaxDateTime, Entrenador
+                                            FROM rel_prueba_usuarios
+                                            GROUP BY PruebaID, UsuarioID) groupedtt 
+                                        ON tt.PruebaID = groupedtt.PruebaID
+                                        and tt.UsuarioID = groupedtt.usuarioID
+                                        AND tt.fecha_Siguiente = groupedtt.MaxDateTime
+                                        where fecha_siguiente between ('" & año & "-01-01') and ('" & año & "-12-31') and usuarios.activo = 1;", conn)
+
+            Console.WriteLine("Entrenamientos Proximo año")
+
+            reader = cmd.ExecuteReader()
+
+            Dim table As New DataTable
+            table.Load(reader)
+            DGVEntProxAno.DataSource = table
+            DGVEntProxAno.ReadOnly = True
+            DGVEntProxAno.AllowUserToResizeColumns = True
+            DGVEntProxAno.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+
+            reader.Close()
+            conn.Close()
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+            conn.Close()
+        Finally
+            reader.Close()
+            conn.Close()
+        End Try
+    End Sub
+
     Private Sub DGVToWord_Click(sender As Object, e As EventArgs) Handles DGVToWord.Click
         If TabControl1.SelectedTab Is Manejo Then
             If TabControl2.SelectedTab Is EntVencidos Then
                 exportToWord(DGVEntVencidos, "Entrenamientos vencidos.")
             ElseIf TabControl2.SelectedTab Is EntProximos Then
                 exportToWord(DGVEntProximos, "Entrenamientos del proximo mes.")
+            ElseIf TabControl2.SelectedTab Is EntProxAno Then
+                exportToWord(DGVEntProxAno, "Entrenamientos del proximo año")
             End If
         ElseIf TabControl1.SelectedTab Is Reportes Then
             If TabControl3.SelectedTab Is EntrenamientosRealizados Then
@@ -813,6 +856,8 @@ Public Class Form1
                 exportToExcel(DGVEntVencidos)
             ElseIf TabControl2.SelectedTab Is EntProximos Then
                 exportToExcel(DGVEntProximos)
+            ElseIf TabControl2.SelectedTab Is EntProxAno Then
+                exportToExcel(DGVEntProxAno)
             End If
         ElseIf TabControl1.SelectedTab Is Reportes Then
             If TabControl3.SelectedTab Is EntrenamientosRealizados Then
