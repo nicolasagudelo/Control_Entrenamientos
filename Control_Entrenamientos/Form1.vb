@@ -10,10 +10,8 @@ Imports DPFP.Capture
 Imports System.IO
 
 Public Class Form1
-    Implements EventHandler
 
     Private Captura As Capture
-    Private Enroller As Processing.Enrollment
     Private Delegate Sub _delegadoMuestra(ByVal text As String)
     Private Delegate Sub _delegadoControles()
     Private Template As Template
@@ -727,7 +725,7 @@ Public Class Form1
                                         ON tt.PruebaID = groupedtt.PruebaID
                                         and tt.UsuarioID = groupedtt.usuarioID
                                         AND tt.fecha_Siguiente = groupedtt.MaxDateTime
-                                        where fecha_siguiente < (select now());", conn)
+                                        where fecha_siguiente < (select now()) and usuarios.activo = 1;", conn)
             conn.Open()
             Console.WriteLine("Entrenamientos Vencidos")
 
@@ -764,7 +762,7 @@ Public Class Form1
                                         ON tt.PruebaID = groupedtt.PruebaID
                                         and tt.UsuarioID = groupedtt.usuarioID
                                         AND tt.fecha_Siguiente = groupedtt.MaxDateTime
-                                        where fecha_siguiente between (select now()) and date_add(date_format(now(),'%Y,%m,%d'), interval 1 month) ;", conn)
+                                        where fecha_siguiente between (select now()) and date_add(date_format(now(),'%Y,%m,%d'), interval 1 month) and usuarios.activo = 1;", conn)
             conn.Open()
 
             Console.WriteLine("Entrenamientos Proximos")
@@ -851,9 +849,12 @@ Public Class Form1
         oPara.Range.Font.Size = 20
         oPara.Range.InsertParagraphAfter()
 
+
+
         Dim headers = (From ch In dgv.Columns
                        Let header = DirectCast(DirectCast(ch, DataGridViewColumn).HeaderCell, DataGridViewColumnHeaderCell)
                        Select header.Value).ToArray()
+
         Dim headerText() As String = Array.ConvertAll(headers, Function(v) v.ToString)
 
         Dim items() = (From r In dgv.Rows
@@ -1152,30 +1153,6 @@ Public Class Form1
         Form2.Show()
     End Sub
 
-    Public Sub OnComplete(Capture As Object, ReaderSerialNumber As String, Sample As Sample) Implements EventHandler.OnComplete
-        Throw New NotImplementedException()
-    End Sub
-
-    Public Sub OnFingerGone(Capture As Object, ReaderSerialNumber As String) Implements EventHandler.OnFingerGone
-        Throw New NotImplementedException()
-    End Sub
-
-    Public Sub OnFingerTouch(Capture As Object, ReaderSerialNumber As String) Implements EventHandler.OnFingerTouch
-        Throw New NotImplementedException()
-    End Sub
-
-    Public Sub OnReaderConnect(Capture As Object, ReaderSerialNumber As String) Implements EventHandler.OnReaderConnect
-        Throw New NotImplementedException()
-    End Sub
-
-    Public Sub OnReaderDisconnect(Capture As Object, ReaderSerialNumber As String) Implements EventHandler.OnReaderDisconnect
-        Throw New NotImplementedException()
-    End Sub
-
-    Public Sub OnSampleQuality(Capture As Object, ReaderSerialNumber As String, CaptureFeedback As CaptureFeedback) Implements EventHandler.OnSampleQuality
-        Throw New NotImplementedException()
-    End Sub
-
     Private Sub BtnAgregarEntrenados_Click(sender As Object, e As EventArgs) Handles BtnAgregarEntrenados.Click
         Parar_Captura()
         conn.Close()
@@ -1309,12 +1286,12 @@ Public Class Form1
         End Try
 
         Dim combo As New DataGridViewComboBoxColumn
-        combo.HeaderText = "Pasa"
-        combo.Name = "Pasa"
-        combo.Items.Add("SI")
-        combo.Items.Add("NO")
-
+            combo.HeaderText = "Pasa"
+            combo.Name = "Pasa"
+            combo.Items.Add("SI")
+            combo.Items.Add("NO")
         DGVCalificaciones.Columns.Add(combo)
+
         DGVCalificaciones.Columns(0).ReadOnly = True
         DGVCalificaciones.Columns(1).ReadOnly = True
         DGVCalificaciones.Columns(0).Visible = False
@@ -1402,6 +1379,9 @@ Public Class Form1
         Next
         MsgBox("Calificaciones Actualizadas", MsgBoxStyle.Information, "Info.")
         BtnCargarLista.Enabled = True
+        DGVCalificaciones.DataSource = Nothing
+        DGVCalificaciones.Rows.Clear()
+        DGVCalificaciones.Columns.Clear()
         BtnCargarLista.PerformClick()
         BtnCargarLista.Enabled = False
 

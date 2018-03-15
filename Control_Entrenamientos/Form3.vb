@@ -148,6 +148,7 @@ Public Class form3
     End Sub
 
     Private Sub CerrarForm()
+        Parar_Captura()
         conn.Close()
         conn.Dispose()
         Me.Close()
@@ -156,6 +157,7 @@ Public Class form3
     Private Sub EscribirEntrenado()
         NombreEntrenado = nombre
         IdEntrenado = Id
+        Parar_Captura()
         conn.Close()
         conn.Dispose()
         Me.Close()

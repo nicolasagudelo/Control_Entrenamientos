@@ -11,6 +11,7 @@ Public Class Form2
     Private Template As Template
     Private Verificador As Verification.Verification
     Private Delegate Sub _delegateTxtBxEntrenador()
+    Private Delegate Sub _delegateCerrarForm()
 
     Dim conn As New MySqlConnection
     Private Sub connect()
@@ -114,6 +115,8 @@ Public Class Form2
                 End While
                 If verificado = False Then
                     MsgBox("No se encontro registro de este usuario en la base de datos")
+                    Dim deleg As New _delegateCerrarForm(AddressOf CerrarForm)
+                    Me.Invoke(deleg)
                 Else
                     Dim deleg As New _delegateTxtBxEntrenador(AddressOf EscribirEntrenador)
                     Me.Invoke(deleg) 'Si quiero cambiar un label o textbox en la form debo implementar el uso de delegados
@@ -126,14 +129,25 @@ Public Class Form2
                 MsgBox("No se logro conectar a la base de datos:" & vbCrLf & ex.Message)
                 conn.Close()
                 Me.Close()
+            Finally
+                conn.Close()
+                conn.Dispose()
             End Try
         End If
+    End Sub
+
+    Private Sub CerrarForm()
+        conn.Close()
+        conn.Dispose()
+        Parar_Captura()
+        Me.Close()
     End Sub
 
     Private Sub EscribirEntrenador()
         Form1.TxtBxEntrenador.Text = nombre
         conn.Close()
         conn.Dispose()
+        Parar_Captura()
         Me.Close()
     End Sub
 
@@ -162,8 +176,6 @@ Public Class Form2
         Init()
         Iniciar_Captura()
     End Sub
-
-
 
     Private Sub Form2_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         Parar_Captura()

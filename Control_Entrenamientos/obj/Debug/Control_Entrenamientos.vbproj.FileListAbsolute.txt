@@ -47,3 +47,5 @@ E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug
 E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form5.resources
 E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form6.resources
 E:\Desarrollo ExxonMobil\Control Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form7.resources
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form6.resources
+C:\Users\IDETECO\source\repos\Control_Entrenamientos\Control_Entrenamientos\obj\Debug\Control_Entrenamientos.Form7.resources
