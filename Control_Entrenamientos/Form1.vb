@@ -21,7 +21,7 @@ Public Class Form1
     Private Sub BtnFiltrarFechas_Click(sender As Object, e As EventArgs) Handles BtnFiltrarFechas.Click
 
         Dim reader As MySqlDataReader
-        If CmbBxCodigoEntrenamiento.SelectedValue = "" Then
+        If CmbBxCodigoEntrenamiento.Text.Trim = "" And CmbBxEntrenados.Text.Trim = "" Then
 
             If FechaInicio.Value > FechaFin.Value Then
                 MsgBox("La fecha inicial no puede estar despues de la fecha final")
@@ -71,7 +71,7 @@ Public Class Form1
                 conn.Close()
             End Try
 
-        Else
+        ElseIf CmbBxCodigoEntrenamiento.Text.Trim <> "" And CmbBxEntrenados.Text.Trim = "" Then
 
             If FechaInicio.Value > FechaFin.Value Then
                 MsgBox("La fecha inicial no puede estar despues de la fecha final")
@@ -121,8 +121,106 @@ Public Class Form1
                 conn.Close()
             End Try
 
-        End If
+        ElseIf CmbBxEntrenados.Text.Trim <> "" And CmbBxCodigoEntrenamiento.Text.Trim = "" Then
+            If FechaInicio.Value > FechaFin.Value Then
+                MsgBox("La fecha inicial no puede estar despues de la fecha final")
+                Exit Sub
+            End If
+            Dim numero_entrenamientos As String
+            Dim fecha_inicial As String = FechaInicio.Value.ToString("yyyy-MM-dd HH:mm:ss")
+            Dim fecha_final As String = FechaFin.Value.ToString("yyyy-MM-dd HH:mm:ss")
+            Try
+                conn.Open()
+                Dim cmd As New MySqlCommand(String.Format("select count(*) as c
+                                                               from rel_prueba_usuarios 
+                                                               where UsuarioID = '" & CmbBxEntrenados.SelectedValue.ToString & "' and Fecha_realizada between '" & fecha_inicial & "' and '" & fecha_final & "';"), conn)
+                numero_entrenamientos = Convert.ToString(cmd.ExecuteScalar())
+                LblNEntrenamientos.Text = numero_entrenamientos
+                LblNumeroEntrenamientos.Visible = True
+                LblNEntrenamientos.Visible = True
+                conn.Close()
+            Catch ex As Exception
+                MsgBox(ex.Message, False, "Error")
+                conn.Close()
+                Exit Sub
+            End Try
 
+            Try
+                Dim cmd As New MySqlCommand("Select Pruebas.Nombre as 'Prueba', u1.Nombre as 'Nombre', Fecha_Realizada, fecha_Siguiente, entrenador
+                                            from usuarios as u1 inner join rel_prueba_usuarios on u1.UsuarioID = rel_prueba_usuarios.UsuarioID
+                                            inner join pruebas on pruebas.pruebaId = rel_prueba_usuarios.PruebaID
+                                            where u1.usuarioid = '" & CmbBxEntrenados.SelectedValue.ToString & "' and Fecha_realizada between'" & fecha_inicial & "' and '" & fecha_final & "'
+                                            order by pruebas.nombre, u1.nombre;;", conn)
+                conn.Open()
+                Console.WriteLine("Entrenamientos entre fechas")
+
+                reader = cmd.ExecuteReader()
+
+                Dim table As New DataTable
+                table.Load(reader)
+                DGVEntrenamientos.DataSource = table
+                DGVEntrenamientos.ReadOnly = True
+                DGVEntrenamientos.AllowUserToResizeColumns = True
+                DGVEntrenamientos.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+
+                reader.Close()
+                conn.Close()
+            Catch ex As MySqlException
+                MsgBox(ex.Message)
+                conn.Close()
+            End Try
+
+        ElseIf CmbBxEntrenados.Text.Trim <> "" And CmbBxCodigoEntrenamiento.Text.Trim <> "" Then
+
+            If FechaInicio.Value > FechaFin.Value Then
+                MsgBox("La fecha inicial no puede estar despues de la fecha final")
+                Exit Sub
+            End If
+            Dim numero_entrenamientos As String
+            Dim fecha_inicial As String = FechaInicio.Value.ToString("yyyy-MM-dd HH:mm:ss")
+            Dim fecha_final As String = FechaFin.Value.ToString("yyyy-MM-dd HH:mm:ss")
+            Try
+                conn.Open()
+                Dim cmd As New MySqlCommand(String.Format("select count(*) as c
+                                                               from rel_prueba_usuarios 
+                                                               where PruebaID = '" & CmbBxCodigoEntrenamiento.SelectedValue.ToString & "' and UsuarioID = '" & CmbBxEntrenados.SelectedValue.ToString & "' and Fecha_realizada between '" & fecha_inicial & "' and '" & fecha_final & "';"), conn)
+                numero_entrenamientos = Convert.ToString(cmd.ExecuteScalar())
+                LblNEntrenamientos.Text = numero_entrenamientos
+                LblNumeroEntrenamientos.Visible = True
+                LblNEntrenamientos.Visible = True
+                conn.Close()
+            Catch ex As Exception
+                MsgBox(ex.Message, False, "Error")
+                conn.Close()
+                Exit Sub
+            End Try
+
+            Try
+                Dim cmd As New MySqlCommand("Select Pruebas.Nombre as 'Prueba', u1.Nombre as 'Nombre', Fecha_Realizada, fecha_Siguiente, entrenador
+                                            from usuarios as u1 inner join rel_prueba_usuarios on u1.UsuarioID = rel_prueba_usuarios.UsuarioID
+                                            inner join pruebas on pruebas.pruebaId = rel_prueba_usuarios.PruebaID
+                                            where u1.usuarioid = '" & CmbBxEntrenados.SelectedValue.ToString & "' and pruebas.pruebaid = '" & CmbBxCodigoEntrenamiento.SelectedValue.ToString & "' and Fecha_realizada between'" & fecha_inicial & "' and '" & fecha_final & "'
+                                            order by pruebas.nombre, u1.nombre;;", conn)
+                conn.Open()
+                Console.WriteLine("Entrenamientos entre fechas")
+
+                reader = cmd.ExecuteReader()
+
+                Dim table As New DataTable
+                table.Load(reader)
+                DGVEntrenamientos.DataSource = table
+                DGVEntrenamientos.ReadOnly = True
+                DGVEntrenamientos.AllowUserToResizeColumns = True
+                DGVEntrenamientos.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+
+                reader.Close()
+                conn.Close()
+            Catch ex As MySqlException
+                MsgBox(ex.Message)
+                conn.Close()
+            End Try
+
+        End If
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -142,6 +240,7 @@ Public Class Form1
         Fecha_Prueba2.Format = DateTimePickerFormat.Custom
         Fecha_Prueba2.CustomFormat = "yyyy-MM-dd"
         Cargar_Codigos_Entrenamientos()
+        Cargar_Entrenados()
         Try
             conn.Open()
             Dim cmd As New MySqlCommand(String.Format("SELECT NOW();"), conn)
@@ -203,7 +302,23 @@ Public Class Form1
         CmbBxPruebaRealizada2.ValueMember = "PruebaID"
         CmbBxPruebaRealizada2.Text = ""
 
+    End Sub
 
+    Private Sub Cargar_Entrenados()
+        CmbBxEntrenados.DataSource = Nothing
+        CmbBxEntrenados.Items.Clear()
+        CmbBxEntrenados.Enabled = True
+        Dim query As String = " Select UsuarioID, Nombre from Usuarios
+                                where Activo = 1;"
+        Dim cmd As New MySqlCommand(query, conn)
+        Dim sqlAdap As New MySqlDataAdapter(cmd)
+        Dim dtRecord As New DataTable
+        sqlAdap.Fill(dtRecord)
+        CmbBxEntrenados.DataSource = dtRecord
+        CmbBxEntrenados.DisplayMember = "Nombre"
+        CmbBxEntrenados.ValueMember = "UsuarioID"
+        CmbBxEntrenados.Text = ""
+        CmbBxEntrenados.SelectedValue = 0
     End Sub
 
     Public Sub Connect()
