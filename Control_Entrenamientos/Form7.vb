@@ -33,6 +33,7 @@ Public Class Form7
             Dim Deleg As New _delegadoControles(AddressOf ActivarControles)
             Me.Invoke(Deleg)
         Else
+            Parar_Captura()
             BtnGuardar.Enabled = True
             TxtBxNombre.Enabled = True
         End If
